@@ -25,15 +25,15 @@ export default function Contact() {
     setTimeout(() => setCopied(false), 1500);
   };
 
-  const handleChange = (e: any) =>
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
     setForm({ ...form, [e.target.name]: e.target.value });
-
-  const handleSubmit = (e: any) => {
+  
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // simulate sending
     setSent(true);
     setForm({ name: "", email: "", message: "" });
   };
+  
 
   const contactJSON = {
     status: "online",
