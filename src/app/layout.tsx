@@ -15,10 +15,21 @@ const geistMono = Geist_Mono({
 export const metadata = {
   title: "KobbyOps — DevOps Portfolio",
   description:
-    "Kobby Jones | Cloud & DevOps Engineer — Automating CI/CD pipelines, deploying scalable applications, and building cloud-native solutions.",
-  icons: {
-    icon: "/favicon.ico",
-  },
+    "Dynamic DevOps engineer portfolio by Cobbina Emmanuel. Automating CI/CD pipelines, deploying scalable apps, and building cloud-native systems.",
+  keywords: [
+    "Kobby Jones",
+    "Cobbina Emmanuel",
+    "DevOps Engineer",
+    "AWS",
+    "Kubernetes",
+    "CI/CD",
+    "Docker",
+    "GitHub Actions",
+    "Flutter Developer",
+    "Cloud Engineer",
+    "Next.js Portfolio"
+  ],
+  authors: [{ name: "Cobbina Emmanuel" }],
   openGraph: {
     title: "KobbyOps — DevOps Portfolio",
     description:
@@ -30,13 +41,17 @@ export const metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "KobbyOps Dashboard Preview",
-      },
+        alt: "KobbyOps DevOps Dashboard Preview"
+      }
     ],
     locale: "en_GB",
-    type: "website",
+    type: "website"
   },
+  icons: {
+    icon: "/favicon.ico"
+  }
 };
+
 
 
 export default function RootLayout({

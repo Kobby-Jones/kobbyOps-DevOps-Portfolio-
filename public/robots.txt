@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://kobbyops.vercel.app/sitemap.xml
