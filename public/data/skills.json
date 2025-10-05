@@ -1,0 +1,42 @@
+[
+    {
+      "category": "Cloud & DevOps",
+      "skills": [
+        { "name": "AWS (EC2, S3, Lambda, RDS, API Gateway, DynamoDB, Rekognition)", "level": 92, "status": "Expert" },
+        { "name": "Docker", "level": 95, "status": "Expert" },
+        { "name": "Kubernetes", "level": 90, "status": "Advanced" },
+        { "name": "Jenkins", "level": 88, "status": "Advanced" },
+        { "name": "GitHub Actions", "level": 85, "status": "Proficient" },
+        { "name": "ArgoCD", "level": 80, "status": "Proficient" },
+        { "name": "Git / GitHub", "level": 92, "status": "Expert" }
+      ]
+    },
+    {
+      "category": "Programming & Frameworks",
+      "skills": [
+        { "name": "Python", "level": 90, "status": "Advanced" },
+        { "name": "JavaScript", "level": 82, "status": "Proficient" },
+        { "name": "Flutter", "level": 78, "status": "Intermediate" },
+        { "name": "Django", "level": 87, "status": "Advanced" },
+        { "name": "REST API Design", "level": 89, "status": "Advanced" }
+      ]
+    },
+    {
+      "category": "Practices & Tools",
+      "skills": [
+        { "name": "CI/CD Pipelines", "level": 94, "status": "Expert" },
+        { "name": "Serverless Architecture", "level": 85, "status": "Proficient" },
+        { "name": "Continuous Integration", "level": 92, "status": "Expert" },
+        { "name": "Terraform (basic)", "level": 65, "status": "Learning" }
+      ]
+    },
+    {
+      "category": "Data & Research",
+      "skills": [
+        { "name": "Data Analysis", "level": 80, "status": "Proficient" },
+        { "name": "SQL (basic)", "level": 68, "status": "Intermediate" },
+        { "name": "Research Writing", "level": 95, "status": "Expert" }
+      ]
+    }
+  ]
+  

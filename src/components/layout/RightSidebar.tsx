@@ -70,7 +70,13 @@ export default function RightSidebar() {
               barSize={16}
               data={radialData}
             >
-              <RadialBar minAngle={15} background clockWise dataKey="value" />
+              <RadialBar
+           
+            background
+            dataKey="value"
+            isAnimationActive={false}
+            />
+
               <Tooltip
                 contentStyle={{
                   background: "#09090b",

@@ -1,62 +1,84 @@
 "use client";
 import { useEffect, useState } from "react";
 
-// helper function for simulating level changes
-const rand = (min: number, max: number) =>
-  Math.floor(Math.random() * (max - min + 1)) + min;
+interface Skill {
+  name: string;
+  level: number;
+  status: string;
+}
+
+interface SkillCategory {
+  category: string;
+  skills: Skill[];
+}
 
 export default function Skills() {
-  const [skills, setSkills] = useState([
-    { name: "Docker", level: 95, status: "Stable" },
-    { name: "Kubernetes", level: 90, status: "Healthy" },
-    { name: "Jenkins / CI", level: 85, status: "Running" },
-    { name: "AWS", level: 78, status: "Scaling" },
-    { name: "Terraform", level: 70, status: "Active" },
-    { name: "Linux", level: 92, status: "Solid" },
-  ]);
+  const [skillGroups, setSkillGroups] = useState<SkillCategory[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Simulate live skill "load" variation
   useEffect(() => {
-    const interval = setInterval(() => {
-      setSkills((prev) =>
-        prev.map((s) => ({
-          ...s,
-          level: Math.min(100, Math.max(60, s.level + rand(-2, 2))),
-        }))
-      );
-    }, 3000);
-    return () => clearInterval(interval);
+    fetch("/data/skills.json")
+      .then((res) => res.json())
+      .then((data) => {
+        setSkillGroups(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Failed to load skills.json", err);
+        setLoading(false);
+      });
   }, []);
 
   const Progress = ({ value }: { value: number }) => (
     <div className="w-full h-2 bg-zinc-800 rounded-full">
       <div
-        className="h-2 bg-teal-400 rounded-full transition-all duration-700"
+        className="h-2 bg-gradient-to-r from-teal-400 via-emerald-400 to-sky-400 rounded-full transition-all duration-700"
         style={{ width: `${value}%` }}
       />
     </div>
   );
 
+  if (loading) {
+    return (
+      <div className="text-zinc-400 text-sm">Loading skills...</div>
+    );
+  }
+
   return (
-    <div className="space-y-3">
-      <h2 className="text-zinc-300 font-medium mb-4">Core DevOps Skills</h2>
-      {skills.map((sk) => (
+    <div className="space-y-6">
+      <h2 className="text-zinc-300 font-medium mb-4">🧰 Core Skills</h2>
+
+      {skillGroups.map((group, i) => (
         <div
-          key={sk.name}
+          key={i}
           className="bg-zinc-900/70 border border-zinc-800 rounded-2xl p-4"
         >
-          <div className="flex items-center justify-between">
-            <div className="text-zinc-200 font-medium">{sk.name}</div>
-            <div className="text-xs text-zinc-400">{sk.status}</div>
+          <div className="text-zinc-200 font-semibold mb-3 border-b border-zinc-800 pb-1">
+            {group.category}
           </div>
-          <div className="mt-2 flex items-center gap-3">
-            <Progress value={sk.level} />
-            <div className="text-zinc-400 text-sm w-12 text-right">
-              {sk.level}%
-            </div>
+
+          <div className="space-y-3">
+            {group.skills.map((sk, idx) => (
+              <div key={idx}>
+                <div className="flex items-center justify-between">
+                  <div className="text-zinc-300 text-sm">{sk.name}</div>
+                  <div className="text-xs text-zinc-500">{sk.status}</div>
+                </div>
+                <div className="flex items-center gap-3 mt-1">
+                  <Progress value={sk.level} />
+                  <div className="text-zinc-400 text-sm w-12 text-right">
+                    {sk.level}%
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       ))}
+
+      <div className="text-xs text-zinc-500 text-center mt-4">
+        Data loaded from <span className="text-teal-400">/data/skills.json</span>
+      </div>
     </div>
   );
 }

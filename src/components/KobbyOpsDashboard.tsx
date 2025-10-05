@@ -8,6 +8,7 @@ import Projects from "./panels/Projects";
 import Deployments from "./panels/Deployments";
 import Logs from "./panels/Logs";
 import Contact from "./panels/Contact";
+import Experience from "./panels/Experience";
 import RightSidebar from "./layout/RightSidebar";
 
 export default function KobbyOpsDashboard() {
@@ -21,6 +22,7 @@ export default function KobbyOpsDashboard() {
       case "deployments": return <Deployments />;
       case "logs": return <Logs />;
       case "contact": return <Contact />;
+      case "experience": return <Experience />;
       default: return <Overview />;
     }
   };

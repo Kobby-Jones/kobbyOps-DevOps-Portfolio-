@@ -1,0 +1,37 @@
+[
+    {
+      "role": "Teaching and Research Assistant",
+      "organization": "University of Energy and Natural Resources (UENR)",
+      "period": "October 2024 – September 2025",
+      "details": [
+        "Developed syllabi, visual aids and other teaching materials.",
+        "Provided support to other instructors within the department.",
+        "Collaborated with faculty members to develop innovative teaching strategies.",
+        "Returned assignments to students to comply with established deadlines.",
+        "Drafted research reports, articles, and blog posts on different projects."
+      ]
+    },
+    {
+      "role": "Intern — Cloud & DevOps Engineer",
+      "organization": "AmaliTech (Remote)",
+      "period": "September 2024 – January 2025",
+      "details": [
+        "Completed a 3-month intensive AWS re/Start program covering EC2, S3, Lambda, API Gateway, DynamoDB, and RDS.",
+        "Built and deployed cloud-based applications implementing serverless architectures with AWS Lambda and Step Functions.",
+        "Developed and managed CI/CD pipelines using Jenkins, Docker, and Kubernetes for seamless application deployment on AWS EC2."
+      ]
+    },
+    {
+      "role": "Intern — Data & Administration",
+      "organization": "Sekyere East District Assembly",
+      "period": "October 2023 – December 2023",
+      "details": [
+        "Maintained accurate records of activities performed throughout internship.",
+        "Prepared reports summarizing project progress and results for management review.",
+        "Analyzed reports to identify data entry errors and corrected incompatibilities.",
+        "Assisted with clerical duties such as photocopying, scanning, and mail sorting.",
+        "Followed proper data program techniques and procedures to maintain integrity."
+      ]
+    }
+  ]
+  

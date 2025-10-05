@@ -1,0 +1,81 @@
+[
+    {
+        "id": "face-attendance",
+        "name": "Face Recognition Attendance App",
+        "status": "active",
+        "stack": "Flutter + AWS Rekognition + AWS S3 + AWS Lambda + API Gateway",
+        "uptime": 120,
+        "success_rate": 95.5,
+        "requests": "1.9k/d",
+        "repo": "https://github.com/Kobby-Jones",
+        "description": "Built a cross-platform mobile app for automated student attendance using real-time facial recognition. Integrated AWS Rekognition CompareFaces API achieving 95%+ accuracy, implemented secure device-bound attendance with daily recovery limits (reducing misuse by 80%), and leveraged serverless architecture to cut costs by 40% while scaling to 500+ users."
+      },
+      {
+        "id": "react-k8s",
+        "name": "React Web App Deployment with Kubernetes & Docker",
+        "status": "active",
+        "stack": "React + Docker + Kubernetes + ArgoCD + Helm + GitHub Actions + AWS S3",
+        "uptime": 99,
+        "success_rate": 99.9,
+        "requests": "1.2k/d",
+        "repo": "https://github.com/Kobby-Jones",
+        "description": "Designed and automated a CI/CD pipeline using GitHub Actions for static web deployments to AWS S3. Deployed a three-tier app with Docker containers on Kubernetes clusters (99.9% uptime), integrated ArgoCD and Helm for automated rollouts, and reduced deployment time by 60%."
+      },
+      {
+        "id": "resume-aws",
+        "name": "Resume Website on AWS",
+        "status": "active",
+        "stack": "AWS S3 + CloudFront + Route 53",
+        "uptime": 365,
+        "success_rate": 100.0,
+        "requests": "500/d",
+        "repo": "https://github.com/Kobby-Jones",
+        "description": "Designed and hosted a personal portfolio website using AWS static hosting. Configured CloudFront CDN and Route 53 for low-latency global access, cutting load times by 50% and achieving 100% uptime with AWS free-tier deployment."
+      },
+    {
+      "id": "prepgo",
+      "name": "PrepGo",
+      "status": "active",
+      "stack": "Flutter + Firebase + Functions",
+      "uptime": 142,
+      "success_rate": 99.3,
+      "requests": "2.3k/d",
+      "repo": "https://github.com/Kobby-Jones",
+      "description": "An academic revision app for UENR students featuring past questions, AI-powered explanations, and Paystack premium tiers."
+    },
+    {
+      "id": "pos-suite",
+      "name": "POS Suite",
+      "status": "active",
+      "stack": "Django + SQLite (offline-first) + Flutter",
+      "uptime": 210,
+      "success_rate": 99.7,
+      "requests": "3.9k/d",
+      "repo": "https://github.com/Kobby-Jones",
+      "description": "An offline-first multi-business POS (supermarket, pharmacy, restaurant) with advanced analytics and local caching."
+    },
+    {
+      "id": "facevault",
+      "name": "FaceVault Pro",
+      "status": "maintenance",
+      "stack": "Flutter + TensorFlow Lite + Secure Storage",
+      "uptime": 31,
+      "success_rate": 98.6,
+      "requests": "350/d",
+      "repo": "https://github.com/Kobby-Jones",
+      "description": "A cross-platform privacy app that uses on-device face recognition to lock and unlock apps, files, or sensitive data."
+    },
+    {
+        "id": "evote",
+        "name": "EVote",
+        "status": "active",
+        "stack": "Django + DRF + Next.js + MoMo",
+        "uptime": 88,
+        "success_rate": 99.0,
+        "requests": "1.1k/d",
+        "repo": "https://github.com/Kobby-Jones",
+        "description": "A secure online voting platform with multi-tenant structure and MTN MoMo integration for paid polls."
+      }
+
+  ]
+  

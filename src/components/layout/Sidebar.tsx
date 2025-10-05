@@ -14,6 +14,8 @@ export default function Sidebar({ currentTab, setTab }: Props) {
     { id: "deployments", label: "Deployments", emoji: "🚀" },
     { id: "logs", label: "Logs", emoji: "📜" },
     { id: "contact", label: "Contact", emoji: "📞" },
+    {id: "experience", label: "Experience", emoji: "💼" }
+    
   ];
 
   return (
