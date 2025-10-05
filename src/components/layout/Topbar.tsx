@@ -23,7 +23,7 @@ export default function Topbar() {
             </div>
           </div>
           <div>
-            <div className="font-semibold">KobbyOps — DevOps Command Center</div>
+            <div className="font-semibold">KobbyOps — DevOps Portfolio</div>
             <div className="text-xs text-zinc-400">
               Monitoring the life, skills, and deployments of Kobby-Jones
             </div>
