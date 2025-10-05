@@ -12,6 +12,8 @@ import {
   Terminal,
   CheckCircle2,
   X,
+  Rocket,
+  ContactIcon
 } from "lucide-react";
 
 export default function Contact() {
@@ -47,7 +49,10 @@ export default function Contact() {
 
   return (
     <div className="space-y-8">
-      <h2 className="text-zinc-300 font-medium">📡 Contact & Network</h2>
+      <h2 className="text-zinc-300 font-medium">
+        <ContactIcon className="inline-block mr-2 mb-1 text-teal-400" size={20} />
+         Contact & Network
+         </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* --- Left side: API view --- */}
@@ -178,7 +183,8 @@ export default function Contact() {
               Based in <span className="text-zinc-300">Sunyani, Ghana</span>
             </div>
             <div className="text-zinc-500 mt-1">
-              Let’s collaborate on DevOps automation, cloud projects, or Flutter deployments 🚀
+              Let’s collaborate on DevOps automation, cloud projects, or Flutter deployments
+              <Rocket size={12} className="inline-block ml-1 text-emerald-400" />
             </div>
           </div>
         </motion.div>

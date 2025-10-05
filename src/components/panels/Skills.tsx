@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { Wrench } from "lucide-react";
 
 interface Skill {
   name: string;
@@ -46,7 +47,10 @@ export default function Skills() {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-zinc-300 font-medium mb-4">🧰 Core Skills</h2>
+      <h2 className="text-zinc-300 font-medium mb-4">
+        <Wrench className="inline-block mr-2 mb-1 text-teal-400" size={20} />
+         Core Skills
+         </h2>
 
       {skillGroups.map((group, i) => (
         <div

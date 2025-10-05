@@ -1,5 +1,15 @@
 "use client";
 import React from "react";
+import {
+  LayoutDashboard,
+  Wrench,
+  Cloud,
+  Rocket,
+  FileText,
+  PhoneCall,
+  Briefcase,
+  Brain,
+} from "lucide-react";
 
 interface Props {
   currentTab: string;
@@ -8,31 +18,33 @@ interface Props {
 
 export default function Sidebar({ currentTab, setTab }: Props) {
   const items = [
-    { id: "overview", label: "Overview", emoji: "🧠" },
-    { id: "skills", label: "Skills", emoji: "🧰" },
-    { id: "projects", label: "Projects", emoji: "☁️" },
-    { id: "deployments", label: "Deployments", emoji: "🚀" },
-    { id: "logs", label: "Logs", emoji: "📜" },
-    { id: "contact", label: "Contact", emoji: "📞" },
-    {id: "experience", label: "Experience", emoji: "💼" }
-    
+    { id: "overview", label: "Overview", icon: <Brain size={14} className="text-teal-400" /> },
+    { id: "skills", label: "Skills", icon: <Wrench size={14} className="text-teal-400" /> },
+    { id: "projects", label: "Projects", icon: <Cloud size={14} className="text-teal-400" /> },
+    { id: "deployments", label: "Deployments", icon: <Rocket size={14} className="text-teal-400" /> },
+    { id: "logs", label: "Logs", icon: <FileText size={14} className="text-teal-400" /> },
+    { id: "contact", label: "Contact", icon: <PhoneCall size={14} className="text-teal-400" /> },
+    { id: "experience", label: "Experience", icon: <Briefcase size={14} className="text-teal-400" /> },
   ];
 
   return (
-    <aside className="bg-zinc-950/60 border border-zinc-800 rounded-2xl p-3 h-fit">
-      <div className="text-zinc-400 text-xs mb-2">Navigation</div>
+    <aside className="bg-zinc-950/60 border border-zinc-800 rounded-2xl p-3 h-fit shadow-lg">
+      <div className="text-zinc-400 text-xs mb-3 tracking-wide uppercase font-medium">
+        Navigation
+      </div>
+
       {items.map((item) => (
         <button
           key={item.id}
           onClick={() => setTab(item.id)}
-          className={`w-full text-left px-3 py-2 rounded-xl mb-1 transition hover:bg-zinc-800/60 ${
+          className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl mb-1 transition-all duration-200 hover:bg-zinc-800/60 ${
             currentTab === item.id
-              ? "bg-zinc-800 text-teal-300"
-              : "text-zinc-300"
+              ? "bg-zinc-800 text-teal-300 font-medium shadow-inner"
+              : "text-zinc-300 hover:text-teal-200"
           }`}
         >
-          <span className="mr-2">{item.emoji}</span>
-          {item.label}
+          {item.icon}
+          <span className="text-sm">{item.label}</span>
         </button>
       ))}
     </aside>

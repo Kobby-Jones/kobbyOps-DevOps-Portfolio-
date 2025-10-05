@@ -10,7 +10,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp, Users2 } from "lucide-react";
 
 // Utility helpers
 const rand = (min: number, max: number) =>
@@ -156,7 +156,8 @@ export default function Overview() {
       >
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-zinc-200 font-semibold flex items-center gap-2">
-            🧑‍💻 Profile Summary
+          <Users2 size={16} className="text-teal-400" />
+            Profile Summary
           </h2>
           <button
             onClick={() => setExpanded((prev) => !prev)}

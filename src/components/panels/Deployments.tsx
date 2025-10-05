@@ -1,5 +1,22 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import {
+  RocketIcon,
+  TimerIcon,
+  CheckCircle,
+  XCircleIcon,
+  Cog,
+  FlaskConical,
+  Package,
+  Satellite,
+  Lock,
+  Search,
+  Cloud,
+  Database,
+  Network,
+  GitBranch,
+  Bug,
+} from "lucide-react";
 
 const rand = (min: number, max: number) =>
   Math.floor(Math.random() * (max - min + 1)) + min;
@@ -27,7 +44,6 @@ export default function Deployments() {
   const [autoRedeploy, setAutoRedeploy] = useState(false);
   const tailRef = useRef<HTMLDivElement | null>(null);
 
-  // --- simulation controls ---
   const startDeployment = () => {
     setLogs([]);
     setProgress(0);
@@ -43,7 +59,6 @@ export default function Deployments() {
     }
   };
 
-  // progress simulation
   useEffect(() => {
     if (outcome !== null) return;
     const interval = setInterval(() => {
@@ -55,18 +70,16 @@ export default function Deployments() {
     return () => clearInterval(interval);
   }, [outcome]);
 
-  // stage update + completion
   useEffect(() => {
     if (progress >= (activeStage + 1) * 20 && activeStage < 4) {
       setActiveStage((s) => s + 1);
       setLogs((prev) => [
-        `${nowFmt()}  ✅ Stage '${pipelineStages[activeStage]}' completed.`,
+        `${nowFmt()} Stage '${pipelineStages[activeStage]}' completed.`,
         ...prev,
       ]);
     }
     if (progress >= 100 && outcome === null) {
-      // Random outcome
-      const didFail = Math.random() < 0.2; // 20% chance of failure
+      const didFail = Math.random() < 0.2;
       const result: Outcome = didFail ? "failed" : "success";
       setOutcome(result);
       setBuildDuration(
@@ -75,45 +88,41 @@ export default function Deployments() {
       setLogs((l) => [
         `${nowFmt()}  ${
           didFail
-            ? "❌ Deployment failed — reason: timeout in container startup."
-            : "✅ Deployment succeeded — all systems operational."
+            ? "[ERROR] Deployment failed — reason: timeout in container startup."
+            : "[OK] Deployment succeeded — all systems operational."
         }`,
         ...l,
       ]);
     }
   }, [progress]);
 
-  // live log generation
   useEffect(() => {
     if (outcome !== null) return;
     const t = setInterval(() => {
       const samples = [
-        `⚙️  Pulling latest commit... (${rand(4, 8)}s)`,
-        `🐳  Building Docker image... layer ${rand(1, 5)}/5`,
-        `🧪  Running test suite... ${rand(98, 100)}% passed.`,
-        `📦  Packaging artifacts...`,
-        `🚀  Deploying to prod environment...`,
-        `🔍  Health check: ${rand(95, 100)}% passed.`,
-        `📡  Updating load balancer routes...`,
-        `🔒  Validating SSL cert... OK.`,
+        `[${nowFmt()}] Pulling latest commit... (${rand(4, 8)}s)`,
+        `[${nowFmt()}] Building Docker image... layer ${rand(1, 5)}/5`,
+        `[${nowFmt()}] Running test suite... ${rand(98, 100)}% passed.`,
+        `[${nowFmt()}] Packaging artifacts...`,
+        `[${nowFmt()}] Deploying to prod environment...`,
+        `[${nowFmt()}] Health check: ${rand(95, 100)}% passed.`,
+        `[${nowFmt()}] Updating load balancer routes...`,
+        `[${nowFmt()}] Validating SSL cert... OK.`,
       ];
       const randomLog = samples[rand(0, samples.length - 1)];
-      setLogs((l) => [`${nowFmt()}  ${randomLog}`, ...l]);
+      setLogs((l) => [randomLog, ...l]);
     }, 1800);
     return () => clearInterval(t);
   }, [outcome]);
 
-  // auto scroll
   useEffect(() => {
     tailRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [logs]);
 
-  // auto redeploy trigger
   useEffect(() => {
     if (outcome === "success") restartOnSuccess();
   }, [outcome]);
 
-  // build time counter
   useEffect(() => {
     if (!buildStart || outcome) return;
     const timer = setInterval(() => {
@@ -135,11 +144,28 @@ export default function Deployments() {
     </div>
   );
 
-  // --- Render ---
+  const iconForLog = (line: string) => {
+    if (line.includes("Pulling")) return <GitBranch size={12} className="text-sky-400" />;
+    if (line.includes("Docker")) return <Cloud size={12} className="text-sky-400" />;
+    if (line.includes("test")) return <FlaskConical size={12} className="text-yellow-400" />;
+    if (line.includes("Packaging")) return <Package size={12} className="text-orange-400" />;
+    if (line.includes("Deploying")) return <RocketIcon size={12} className="text-emerald-400" />;
+    if (line.includes("Health")) return <Search size={12} className="text-teal-400" />;
+    if (line.includes("load balancer")) return <Network size={12} className="text-cyan-400" />;
+    if (line.includes("SSL")) return <Lock size={12} className="text-green-400" />;
+    if (line.includes("ERROR")) return <XCircleIcon size={12} className="text-rose-400" />;
+    if (line.includes("OK") || line.includes("succeeded"))
+      return <CheckCircle size={12} className="text-emerald-400" />;
+    return <Cog size={12} className="text-zinc-400" />;
+  };
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between mb-2">
-        <h2 className="text-zinc-300 font-medium">🚀 Live CI/CD Pipeline</h2>
+        <h2 className="text-zinc-300 font-medium flex items-center gap-2">
+          <RocketIcon className="text-teal-400" size={20} />
+          Live CI/CD Pipeline
+        </h2>
         <div className="flex items-center gap-3">
           <label className="text-xs text-zinc-500 flex items-center gap-1">
             <input
@@ -158,16 +184,14 @@ export default function Deployments() {
         </div>
       </div>
 
-      {/* Pipeline Summary */}
       <div className="bg-zinc-900/70 border border-zinc-800 rounded-2xl p-4">
         <div className="flex flex-wrap items-center justify-between">
           <div className="font-medium text-zinc-200">
             portfolio@main — CI Runner #{rand(10, 99)}
           </div>
-          <div className="text-xs text-zinc-500">
-            Duration: {buildDuration}s
-          </div>
+          <div className="text-xs text-zinc-500">Duration: {buildDuration}s</div>
         </div>
+
         <Progress value={progress} />
 
         <div className="grid grid-cols-1 md:grid-cols-5 gap-2 mt-3">
@@ -175,9 +199,7 @@ export default function Deployments() {
             <div
               key={s}
               className={`text-xs flex items-center gap-2 ${
-                i <= activeStage
-                  ? "text-emerald-400"
-                  : "text-zinc-500 opacity-60"
+                i <= activeStage ? "text-emerald-400" : "text-zinc-500 opacity-60"
               }`}
             >
               <span
@@ -191,45 +213,54 @@ export default function Deployments() {
         </div>
 
         <div className="mt-4 text-sm text-zinc-400">
-          {outcome === null && <>⏳ Pipeline running... stand by.</>}
+          {outcome === null && (
+            <>
+              <TimerIcon
+                className="inline-block mr-2 mb-1 text-emerald-500"
+                size={14}
+              />
+              Pipeline running... stand by.
+            </>
+          )}
           {outcome === "success" && (
-            <span className="text-emerald-400">✅ Deployment successful.</span>
+            <span className="text-emerald-400 flex items-center gap-1">
+              <CheckCircle size={14} className="text-emerald-400" />
+              Deployment successful.
+            </span>
           )}
           {outcome === "failed" && (
-            <span className="text-rose-400">❌ Pipeline failed.</span>
+            <span className="text-rose-400 flex items-center gap-1">
+              <XCircleIcon size={14} className="text-rose-400" />
+              Pipeline failed.
+            </span>
           )}
         </div>
       </div>
 
-      {/* Deployment Logs */}
       <div className="bg-zinc-900/70 border border-zinc-800 rounded-2xl p-4">
         <div className="font-medium text-zinc-200 mb-2">
           tail -f /var/log/pipeline.log
         </div>
-        <div className="font-mono text-xs text-zinc-300 bg-black/50 rounded-xl p-3 h-80 overflow-auto">
+        <div className="font-mono text-xs text-zinc-300 bg-black/50 rounded-xl p-3 h-80 overflow-auto space-y-1">
           {[...logs].reverse().map((line, idx) => (
             <div
               key={idx}
-              className={`whitespace-pre ${
-                line.includes("❌")
+              className={`flex items-center gap-2 whitespace-pre ${
+                line.includes("ERROR")
                   ? "text-rose-400"
-                  : line.includes("✅")
+                  : line.includes("OK") || line.includes("succeeded")
                   ? "text-emerald-400"
-                  : line.includes("⚙️") ||
-                    line.includes("🐳") ||
-                    line.includes("🚀")
-                  ? "text-sky-400"
                   : "text-zinc-300"
               }`}
             >
-              {line}
+              {iconForLog(line)}
+              <span>{line}</span>
             </div>
           ))}
           <div ref={tailRef} />
         </div>
       </div>
 
-      {/* Deployment Summary */}
       {outcome && (
         <div
           className={`rounded-2xl p-4 text-center ${
@@ -240,22 +271,26 @@ export default function Deployments() {
         >
           {outcome === "success" ? (
             <>
-              <div className="text-emerald-400 font-semibold text-lg">
-                ✅ Deployment Succeeded
+              <div className="text-emerald-400 font-semibold text-lg flex items-center justify-center gap-2">
+                <CheckCircle size={20} className="text-emerald-400" />
+                Deployment Succeeded
               </div>
               <div className="text-zinc-400 text-sm mt-1">
-                Version <span className="text-zinc-200">v2.{rand(1, 9)}.{rand(0, 9)}</span>{" "}
+                Version{" "}
+                <span className="text-zinc-200">
+                  v2.{rand(1, 9)}.{rand(0, 9)}
+                </span>{" "}
                 deployed in {buildDuration}s — all systems operational.
               </div>
             </>
           ) : (
             <>
-              <div className="text-rose-400 font-semibold text-lg">
-                ❌ Deployment Failed
+              <div className="text-rose-400 font-semibold text-lg flex items-center justify-center gap-2">
+                <XCircleIcon size={20} className="text-rose-400" />
+                Deployment Failed
               </div>
               <div className="text-zinc-400 text-sm mt-1">
-                Rolled back to stable version v2.{rand(0, 8)}.{rand(0, 9)}.  
-                Issue logged for review.
+                Rolled back to stable version v2.{rand(0, 8)}.{rand(0, 9)}. Issue logged for review.
               </div>
             </>
           )}

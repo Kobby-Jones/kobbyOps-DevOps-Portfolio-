@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Code2 } from "lucide-react";
 
 interface Project {
   id: string;
@@ -71,7 +72,10 @@ export default function Projects() {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-zinc-300 font-medium">☁️ Projects</h2>
+      <h2 className="text-zinc-300 font-medium">
+        <Code2 className="inline-block mr-2 mb-1 text-teal-400" size={20} />
+         Projects
+         </h2>
 
       {Object.entries(grouped).map(([category, list]) => (
         <div key={category} className="space-y-3">
