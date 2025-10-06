@@ -1,7 +1,9 @@
+export const runtime = "nodejs";
+
 import crypto from "crypto";
 import { NextRequest, NextResponse } from "next/server";
 
-// In-memory log buffer (temporary; could later use Redis or Mongo)
+// In-memory log buffer (temporary; later can use Redis or Supabase)
 const logs: string[] = [];
 
 export async function POST(req: NextRequest) {
@@ -12,7 +14,11 @@ export async function POST(req: NextRequest) {
   // Verify signature
   const hmac = crypto.createHmac("sha256", secret || "");
   const digest = `sha256=${hmac.update(body).digest("hex")}`;
-  if (signature !== digest) {
+  const valid =
+    signature &&
+    crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(digest));
+
+  if (!valid) {
     return NextResponse.json({ error: "Invalid signature" }, { status: 403 });
   }
 
@@ -44,7 +50,6 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({ status: "ok" });
 }
 
-// GET for debugging
 export async function GET() {
   return NextResponse.json({ logs });
 }
