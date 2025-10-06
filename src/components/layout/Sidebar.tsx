@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import {
-  LayoutDashboard,
   Wrench,
   Cloud,
   Rocket,
@@ -9,6 +8,7 @@ import {
   PhoneCall,
   Briefcase,
   Brain,
+  Github as GithubIcon,
 } from "lucide-react";
 
 interface Props {
@@ -25,6 +25,7 @@ export default function Sidebar({ currentTab, setTab }: Props) {
     { id: "logs", label: "Logs", icon: <FileText size={14} className="text-teal-400" /> },
     { id: "contact", label: "Contact", icon: <PhoneCall size={14} className="text-teal-400" /> },
     { id: "experience", label: "Experience", icon: <Briefcase size={14} className="text-teal-400" /> },
+    { id: "github", label: "GitHub", icon: <GithubIcon size={14} className="text-teal-400" /> },
   ];
 
   return (

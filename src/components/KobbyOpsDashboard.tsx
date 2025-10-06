@@ -10,6 +10,7 @@ import Logs from "./panels/Logs";
 import Contact from "./panels/Contact";
 import Experience from "./panels/Experience";
 import RightSidebar from "./layout/RightSidebar";
+import GithubPanel from "./panels/Github";
 
 export default function KobbyOpsDashboard() {
   const [tab, setTab] = useState("overview");
@@ -23,6 +24,7 @@ export default function KobbyOpsDashboard() {
       case "logs": return <Logs />;
       case "contact": return <Contact />;
       case "experience": return <Experience />;
+      case "github": return <GithubPanel />;
       default: return <Overview />;
     }
   };
