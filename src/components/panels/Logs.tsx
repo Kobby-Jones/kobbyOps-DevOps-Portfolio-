@@ -34,24 +34,16 @@ export default function Logs() {
   const [streaming, setStreaming] = useState(true);
   const tailRef = useRef<HTMLDivElement | null>(null);
 
+// WebSocket-style polling of logs API (every few seconds)
   useEffect(() => {
-    if (!streaming) return;
-    const interval = setInterval(() => {
-      const randomEvents = [
-        `INFO  Running system diagnostics... all green.`,
-        `DEPLOY  Auto-scaling enabled for EVote cluster.`,
-        `ACHV  Completed Flutter microservice optimization.`,
-        `CERT  Completed Jenkins CI/CD Masterclass.`,
-        `ERROR  Temporary failure in Docker registry connection.`,
-        `DEPLOY  POS Suite updated with new analytics module.`,
-        `ACHV  Published research paper on GNN recommender systems.`,
-        `INFO  Monitoring uptime — 99.99% sustained.`,
-      ];
-      const entry = randomEvents[Math.floor(Math.random() * randomEvents.length)];
-      setLogs((l) => [`${nowFmt()}  ${entry}`, ...l.slice(0, 80)]);
-    }, 3500);
+    const interval = setInterval(async () => {
+      const res = await fetch("/api/webhook/github");
+      const data = await res.json();
+      if (Array.isArray(data.logs)) setLogs(data.logs);
+    }, 5000);
     return () => clearInterval(interval);
-  }, [streaming]);
+  }, []);
+
 
   useEffect(() => {
     tailRef.current?.scrollIntoView({ behavior: "smooth" });
