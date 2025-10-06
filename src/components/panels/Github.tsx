@@ -86,7 +86,7 @@ export default function GithubPanel() {
     return (
       <div className="text-zinc-400 text-sm">
         Failed to load GitHub data. Ensure{" "}
-        <code>GITHUB_USERNAME</code> and <code>GITHUB_TOKEN</code> are set.
+        {/* <code>GITHUB_USERNAME</code> and <code>GITHUB_TOKEN</code> are set. */}
       </div>
     );
 
