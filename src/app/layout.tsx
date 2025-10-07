@@ -30,9 +30,9 @@ export const metadata = {
   ],
   authors: [{ name: "Cobbina Emmanuel" }],
   openGraph: {
-    title: "KobbyOps — DevOps Portfolio",
-    description:
-      "A live DevOps dashboard & portfolio that visualizes real-time GitHub workflows, deployments, and cloud metrics.",
+    title: "Cobbina Emmanuel (Kobby Jones) — DevOps Engineer | KobbyOps",
+  description:
+    "Official portfolio of Cobbina Emmanuel (Kobby Jones), a DevOps Engineer specializing in AWS, CI/CD, and cloud-native automation.", 
     url: "https://kobbyops.vercel.app",
     siteName: "KobbyOps",
     images: [
