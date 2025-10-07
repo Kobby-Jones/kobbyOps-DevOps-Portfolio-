@@ -32,7 +32,7 @@ export const metadata = {
   openGraph: {
     title: "KobbyOps — DevOps Portfolio",
     description:
-      "Dynamic DevOps dashboard portfolio built with Next.js, Tailwind, and Framer Motion.",
+      "A live DevOps dashboard & portfolio that visualizes real-time GitHub workflows, deployments, and cloud metrics.",
     url: "https://kobbyops.vercel.app",
     siteName: "KobbyOps",
     images: [
@@ -50,6 +50,12 @@ export const metadata = {
     icon: "/favicon.ico"
   }
 };
+
+export const viewport = {
+  themeColor: "#0f172a",
+};
+
+export const dynamic = "force-static";
 
 
 
