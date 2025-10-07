@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
   logs.unshift(message);
   if (logs.length > 100) logs.pop();
 
-  console.log("📡 GitHub Event:", message);
+  console.log("GitHub Event:", message);
 
   return NextResponse.json({ status: "ok" });
 }
