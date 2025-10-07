@@ -1,10 +1,12 @@
-export const runtime = "nodejs";
-
 import crypto from "crypto";
 import { NextRequest, NextResponse } from "next/server";
+import { createClient } from "@supabase/supabase-js";
 
-// In-memory log buffer (temporary; later can use Redis or Supabase)
-const logs: string[] = [];
+// Initialize Supabase client once per invocation
+const supabase = createClient(
+  process.env.SUPABASE_URL!,
+  process.env.SUPABASE_KEY!
+);
 
 export async function POST(req: NextRequest) {
   const secret = process.env.GITHUB_WEBHOOK_SECRET;
@@ -14,11 +16,7 @@ export async function POST(req: NextRequest) {
   // Verify signature
   const hmac = crypto.createHmac("sha256", secret || "");
   const digest = `sha256=${hmac.update(body).digest("hex")}`;
-  const valid =
-    signature &&
-    crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(digest));
-
-  if (!valid) {
+  if (signature !== digest) {
     return NextResponse.json({ error: "Invalid signature" }, { status: 403 });
   }
 
@@ -30,26 +28,35 @@ export async function POST(req: NextRequest) {
 
   switch (event) {
     case "push":
-      message = `${now}  PUSH  ${payload.pusher.name} pushed ${payload.commits.length} commit(s) to ${payload.repository.name}`;
+      message = `${now} PUSH ${payload.pusher.name} pushed ${payload.commits.length} commit(s) to ${payload.repository.name}`;
       break;
     case "workflow_run":
-      message = `${now}  CI/CD  Workflow '${payload.workflow.name}' ${payload.action}`;
+      message = `${now} CI/CD Workflow '${payload.workflow.name}' ${payload.action}`;
       break;
     case "create":
-      message = `${now}  REPO  Branch '${payload.ref}' created in ${payload.repository.name}`;
+      message = `${now} REPO Branch '${payload.ref}' created in ${payload.repository.name}`;
       break;
     default:
-      message = `${now}  EVENT  ${event} triggered`;
+      message = `${now} EVENT ${event} triggered`;
   }
 
-  logs.unshift(message);
-  if (logs.length > 100) logs.pop();
+  // Save to Supabase
+  await supabase.from("github_logs").insert({
+    event_type: event,
+    message,
+  });
 
-  console.log("GitHub Event:", message);
-
+  console.log("📡 GitHub Event:", message);
   return NextResponse.json({ status: "ok" });
 }
 
 export async function GET() {
-  return NextResponse.json({ logs });
+  const { data, error } = await supabase
+    .from("github_logs")
+    .select("*")
+    .order("id", { ascending: false })
+    .limit(50);
+
+  if (error) return NextResponse.json({ error }, { status: 500 });
+  return NextResponse.json({ logs: data });
 }
