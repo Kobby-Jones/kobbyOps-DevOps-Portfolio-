@@ -9,6 +9,7 @@ import {
   Briefcase,
   Brain,
   Github as GithubIcon,
+  Activity,
 } from "lucide-react";
 
 interface Props {
@@ -26,6 +27,8 @@ export default function Sidebar({ currentTab, setTab }: Props) {
     { id: "contact", label: "Contact", icon: <PhoneCall size={14} className="text-teal-400" /> },
     { id: "experience", label: "Experience", icon: <Briefcase size={14} className="text-teal-400" /> },
     { id: "github", label: "GitHub", icon: <GithubIcon size={14} className="text-teal-400" /> },
+    { id: "dashboard", label: "Dashboard", icon: <Activity size={16} className="inline text-teal-400" /> },
+
   ];
 
   return (
