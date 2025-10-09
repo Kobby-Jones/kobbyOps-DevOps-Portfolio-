@@ -248,3 +248,20 @@ This project is open-sourced under the **MIT License**.
 
 Give it a ⭐ on [GitHub](https://github.com/Kobby-Jones)  
 and connect with me on [LinkedIn](https://www.linkedin.com/in/cobbina-emmanuel-376072209/)
+
+## 🖼️ Screenshots
+
+Here are some preview shots of the **KobbyOps** dashboard and portfolio interface:
+
+| Screenshot | Description |
+| ----------- | ------------ |
+| ![Overview 1](./public/screenshots/Overview1.png) | **Portfolio overview** — Overview of Cobbina Emmanuel and key DevOps metrics |
+| ![Overview 2](./public/screenshots/Overview2.png) | **Overview Panel** — Portfolio Overviewand Personal Analytics |
+| ![Skills](./public/screenshots/Skills.png) | **Skills Panel** — "Cloud & DevOps skills |
+| ![Projects](./public/screenshots/Projects.png) | **Projects Panel** — Showcase of DevOps and software engineering projects |
+| ![Dashboard](./public/screenshots/Dashboard.png) | **Dashboard Panel** — Real-time DevOps dashboard visualizing GitHub commits, CI/CD workflows, and system performance. |
+| ![Deployments](./public/screenshots/Deployments.png) | **Deployments Panel** — Live CI/CD deployment monitor showing automated pipelines, workflow status, and logs. |
+| ![Logs](./public/screenshots/Logs.png) | **Logs Panel** — Real-time system logs displaying GitHub push, workflow, and deployment events. |
+| ![Experience](./public/screenshots/Experience.png) | **Experience Panel** — Professional experience of Cobbina Emmanuel |
+| ![Contact](./public/screenshots/Contact.png) | **Contact Panel** — Get in touch with Cobbina Emmanuel (Kobby Jones) |
+| ![GitHub](./public/screenshots/Github.png) | **GitHub Panel** — Live GitHub integration showing repositories, commits, and real-time activity via Supabase webhook. |
