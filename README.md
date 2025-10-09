@@ -256,8 +256,8 @@ Here are some preview shots of the **KobbyOps** dashboard and portfolio interfac
 | Screenshot | Description |
 | ----------- | ------------ |
 | ![Overview 1](./public/screenshots/Overview1.png) | **Portfolio overview** — Overview of Cobbina Emmanuel and key DevOps metrics |
-| ![Overview 2](./public/screenshots/Overview2.png) | **Overview Panel** — Portfolio Overviewand Personal Analytics |
-| ![Skills](./public/screenshots/Skills.png) | **Skills Panel** — "Cloud & DevOps skills |
+| ![Overview 2](./public/screenshots/Overview2.png) | **Overview Panel** — Portfolio Overview and Personal Analytics |
+| ![Skills](./public/screenshots/Skills.png) | **Skills Panel** — Cloud & DevOps skills |
 | ![Projects](./public/screenshots/Projects.png) | **Projects Panel** — Showcase of DevOps and software engineering projects |
 | ![Dashboard](./public/screenshots/Dashboard.png) | **Dashboard Panel** — Real-time DevOps dashboard visualizing GitHub commits, CI/CD workflows, and system performance. |
 | ![Deployments](./public/screenshots/Deployments.png) | **Deployments Panel** — Live CI/CD deployment monitor showing automated pipelines, workflow status, and logs. |
