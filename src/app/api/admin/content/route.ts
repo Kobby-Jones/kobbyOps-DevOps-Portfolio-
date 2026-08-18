@@ -1,3 +1,4 @@
+import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
 import { createAdminSupabaseClient } from "@/lib/supabase";
@@ -28,7 +29,20 @@ export async function POST(request: Request) {
   try {
     const input = await request.json();
     const payload = parseContentPayload(input as Record<string, unknown>);
-    const { id, ...values } = payload;
+    const { id, ...parsedValues } = payload;
+    const values = { ...parsedValues };
+
+    if (values.cover_asset_id) {
+      const { data: cover, error: coverError } = await supabase
+        .from("media_assets")
+        .select("id,asset_type,status")
+        .eq("id", values.cover_asset_id)
+        .single();
+      if (coverError || !cover || cover.status !== "active" || cover.asset_type === "resource_file") {
+        return NextResponse.json({ error: "Select a valid active S3 image for the cover." }, { status: 400 });
+      }
+      values.cover_url = `/api/media/${cover.id}`;
+    }
 
     const result = id
       ? await supabase.from("content_items").update(values).eq("id", id).select("*").single()
@@ -38,6 +52,12 @@ export async function POST(request: Request) {
       const status = result.error.code === "23505" ? 409 : 500;
       return NextResponse.json({ error: result.error.message }, { status });
     }
+
+    revalidatePath("/writing");
+    revalidatePath(`/${result.data.type === "blog" ? "blog" : "insights"}`);
+    revalidatePath(`/${result.data.type === "blog" ? "blog" : "insights"}/${result.data.slug}`);
+    revalidatePath("/feed.xml");
+    revalidatePath("/sitemap.xml");
 
     return NextResponse.json({ item: result.data }, { status: id ? 200 : 201 });
   } catch (error) {

@@ -5,6 +5,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowUpRight,
   BarChart3,
+  Database,
+  Link2,
   Edit3,
   Eye,
   FileText,
@@ -20,6 +22,7 @@ import {
   X,
   type LucideIcon,
 } from "lucide-react";
+import AssetLibraryPanel, { type MediaAsset, type PreparedResource } from "./AssetLibraryPanel";
 
 // ─── Content types ───────────────────────────────────────────────────────────
 
@@ -33,6 +36,7 @@ type ContentItem = {
   status: "draft" | "published";
   tags: string[];
   cover_url?: string | null;
+  cover_asset_id?: string | null;
   seo_title?: string | null;
   seo_description?: string | null;
   canonical_url?: string | null;
@@ -99,6 +103,7 @@ const initialContentForm = {
   tags: "",
   status: "draft" as "draft" | "published",
   coverUrl: "",
+  coverAssetId: "",
   seoTitle: "",
   seoDescription: "",
   canonicalUrl: "",
@@ -118,7 +123,10 @@ const initialResourceForm = {
   price: "0",
   currency: "USD",
   thumbnailUrl: "",
+  thumbnailAssetId: "",
   fileUrl: "",
+  fileAssetId: "",
+  preparedResourceId: "",
   externalUrl: "",
   status: "draft" as "draft" | "published",
   featured: false,
@@ -220,7 +228,7 @@ function useModalFocus(
 }
 
 export default function AdminConsole() {
-  const [tab, setTab] = useState<"content" | "analytics" | "resources" | "services" | "consultations" | "orders">("content");
+  const [tab, setTab] = useState<"content" | "assets" | "analytics" | "resources" | "services" | "consultations" | "orders">("content");
 
   // Data
   const [items, setItems] = useState<ContentItem[]>([]);
@@ -229,6 +237,8 @@ export default function AdminConsole() {
   const [serviceItems, setServiceItems] = useState<Record<string, unknown>[]>([]);
   const [consultationItems, setConsultationItems] = useState<Record<string, unknown>[]>([]);
   const [orderItems, setOrderItems] = useState<Record<string, unknown>[]>([]);
+  const [assetItems, setAssetItems] = useState<MediaAsset[]>([]);
+  const [preparedResourceItems, setPreparedResourceItems] = useState<PreparedResource[]>([]);
 
   // Forms
   const [contentForm, setContentForm] = useState(initialContentForm);
@@ -246,18 +256,21 @@ export default function AdminConsole() {
   const contentDialogRef = useModalFocus(contentEditorOpen, setContentEditorOpen);
   const resourceDialogRef = useModalFocus(resourceEditorOpen, setResourceEditorOpen);
   const serviceDialogRef = useModalFocus(serviceEditorOpen, setServiceEditorOpen);
+  const contentTextareaRef = useRef<HTMLTextAreaElement>(null);
 
   // ─── Load all data ──────────────────────────────────────────────────────
 
   const load = useCallback(async () => {
     setLoading(true);
-    const [contentR, analyticsR, resourcesR, servicesR, consultationsR, ordersR] = await Promise.all([
+    const [contentR, analyticsR, resourcesR, servicesR, consultationsR, ordersR, assetsR, preparedR] = await Promise.all([
       fetch("/api/admin/content", { cache: "no-store" }),
       fetch("/api/admin/analytics", { cache: "no-store" }),
       fetch("/api/admin/resources", { cache: "no-store" }).catch(() => null),
       fetch("/api/admin/services", { cache: "no-store" }).catch(() => null),
       fetch("/api/admin/consultations", { cache: "no-store" }).catch(() => null),
       fetch("/api/admin/orders", { cache: "no-store" }).catch(() => null),
+      fetch("/api/admin/assets", { cache: "no-store" }).catch(() => null),
+      fetch("/api/admin/prepared-resources", { cache: "no-store" }).catch(() => null),
     ]);
     if (contentR.ok) setItems((await contentR.json()).items || []);
     else {
@@ -269,6 +282,8 @@ export default function AdminConsole() {
     if (servicesR?.ok) setServiceItems((await servicesR.json()).items || []);
     if (consultationsR?.ok) setConsultationItems((await consultationsR.json()).items || []);
     if (ordersR?.ok) setOrderItems((await ordersR.json()).items || []);
+    if (assetsR?.ok) setAssetItems((await assetsR.json()).items || []);
+    if (preparedR?.ok) setPreparedResourceItems((await preparedR.json()).items || []);
     setLoading(false);
   }, []);
 
@@ -297,6 +312,7 @@ export default function AdminConsole() {
       tags: (item.tags || []).join(", "),
       status: item.status,
       coverUrl: item.cover_url || "",
+      coverAssetId: String(item.cover_asset_id || ""),
       seoTitle: item.seo_title || "",
       seoDescription: item.seo_description || "",
       canonicalUrl: item.canonical_url || "",
@@ -332,6 +348,25 @@ export default function AdminConsole() {
     load();
   }
 
+  function selectCoverAsset(assetId: string) {
+    updateContent("coverAssetId", assetId);
+    updateContent("coverUrl", assetId ? `/api/media/${assetId}` : "");
+  }
+
+  function insertIntoContent(markdown: string) {
+    const textarea = contentTextareaRef.current;
+    const start = textarea?.selectionStart ?? contentForm.content.length;
+    const end = textarea?.selectionEnd ?? start;
+    const next = `${contentForm.content.slice(0, start)}${markdown}${contentForm.content.slice(end)}`;
+    updateContent("content", next);
+    requestAnimationFrame(() => {
+      if (!textarea) return;
+      const cursor = start + markdown.length;
+      textarea.focus();
+      textarea.setSelectionRange(cursor, cursor);
+    });
+  }
+
   // ─── Resource CRUD ──────────────────────────────────────────────────────
 
   function updateResource<K extends keyof typeof initialResourceForm>(key: K, value: (typeof initialResourceForm)[K]) {
@@ -342,6 +377,34 @@ export default function AdminConsole() {
     setResourceForm(initialResourceForm);
     setNotice("");
     setResourceEditorOpen(true);
+  }
+
+  function applyPreparedResource(preparedId: string) {
+    if (!preparedId) {
+      updateResource("preparedResourceId", "");
+      return;
+    }
+    const prepared = preparedResourceItems.find((item) => item.id === preparedId);
+    if (!prepared) return;
+    setResourceForm((prev) => ({
+      ...prev,
+      preparedResourceId: prepared.id,
+      title: prev.title || prepared.name,
+      type: prepared.default_type,
+      category: prepared.default_category || "engineering",
+      price: String(prepared.default_type === "paid_product" ? prepared.default_price || 0 : 0),
+      currency: prepared.default_currency || "GHS",
+      fileAssetId: prepared.file_asset_id || "",
+      fileUrl: "",
+      thumbnailAssetId: prepared.thumbnail_asset_id || "",
+      thumbnailUrl: prepared.thumbnail_asset_id ? `/api/media/${prepared.thumbnail_asset_id}` : prev.thumbnailUrl,
+      externalUrl: prepared.external_url || "",
+    }));
+  }
+
+  function selectResourceThumbnail(assetId: string) {
+    updateResource("thumbnailAssetId", assetId);
+    updateResource("thumbnailUrl", assetId ? `/api/media/${assetId}` : "");
   }
 
   function editResource(item: Record<string, unknown>) {
@@ -356,7 +419,10 @@ export default function AdminConsole() {
       price: String(item.price ?? "0"),
       currency: String(item.currency || "USD"),
       thumbnailUrl: String(item.thumbnail_url || ""),
+      thumbnailAssetId: String(item.thumbnail_asset_id || ""),
       fileUrl: String(item.file_url || ""),
+      fileAssetId: String(item.file_asset_id || ""),
+      preparedResourceId: String(item.prepared_resource_id || ""),
       externalUrl: String(item.external_url || ""),
       status: (String(item.status) === "published" ? "published" : "draft"),
       featured: Boolean(item.featured),
@@ -495,6 +561,7 @@ export default function AdminConsole() {
       <div className="container-shell py-10">
         <nav className="admin-tab-list flex gap-2 overflow-x-auto border-b border-white/10" aria-label="Admin sections">
           <button type="button" aria-pressed={tab === "content"} className={`admin-tab ${tab === "content" ? "admin-tab-active" : ""}`} onClick={() => setTab("content")}><FileText size={16} aria-hidden="true" /> Content</button>
+          <button type="button" aria-pressed={tab === "assets"} className={`admin-tab ${tab === "assets" ? "admin-tab-active" : ""}`} onClick={() => setTab("assets")}><Database size={16} aria-hidden="true" /> Asset Library</button>
           <button type="button" aria-pressed={tab === "resources"} className={`admin-tab ${tab === "resources" ? "admin-tab-active" : ""}`} onClick={() => setTab("resources")}><Package size={16} aria-hidden="true" /> Resources</button>
           <button type="button" aria-pressed={tab === "services"} className={`admin-tab ${tab === "services" ? "admin-tab-active" : ""}`} onClick={() => setTab("services")}><Settings size={16} aria-hidden="true" /> Services</button>
           <button type="button" aria-pressed={tab === "consultations"} className={`admin-tab ${tab === "consultations" ? "admin-tab-active" : ""}`} onClick={() => setTab("consultations")}><Users size={16} aria-hidden="true" /> Leads</button>
@@ -528,6 +595,15 @@ export default function AdminConsole() {
               ))}
             </div>
           </section>
+
+        ) : tab === "assets" ? (
+          <AssetLibraryPanel
+            assets={assetItems}
+            preparedResources={preparedResourceItems}
+            categories={RESOURCE_CATEGORIES}
+            onReload={load}
+            onNotice={setNotice}
+          />
 
         ) : tab === "resources" ? (
           <section className="py-8">
@@ -737,12 +813,57 @@ export default function AdminConsole() {
               <label className="form-label mt-5">Title<input className="form-input" value={contentForm.title} onChange={(e) => updateContent("title", e.target.value)} required /></label>
               <label className="form-label mt-5">Slug <span className="text-zinc-700">(optional; generated from title)</span><input className="form-input font-mono" value={contentForm.slug} onChange={(e) => updateContent("slug", e.target.value)} /></label>
               <label className="form-label mt-5">Excerpt<textarea className="form-input min-h-24" value={contentForm.excerpt} onChange={(e) => updateContent("excerpt", e.target.value)} required maxLength={320} /></label>
-              <label className="form-label mt-5">Content <span className="text-zinc-700">(Markdown)</span><textarea className="form-input min-h-80 font-mono text-sm leading-6" value={contentForm.content} onChange={(e) => updateContent("content", e.target.value)} required /></label>
+              <div className="mt-5">
+                <div className="flex flex-wrap items-end gap-3 rounded-xl border border-white/10 bg-white/[0.02] p-4">
+                  <label className="form-label min-w-56 flex-1">Insert S3 image
+                    <select
+                      className="form-input"
+                      defaultValue=""
+                      onChange={(e) => {
+                        const asset = assetItems.find((item) => item.id === e.target.value);
+                        if (!asset) return;
+                        insertIntoContent(`\n![${asset.alt_text || asset.display_name}](/api/media/${asset.id})\n`);
+                        e.target.value = "";
+                      }}
+                    >
+                      <option value="">Choose an image…</option>
+                      {assetItems.filter((asset) => asset.status === "active" && asset.asset_type !== "resource_file").map((asset) => <option key={asset.id} value={asset.id}>{asset.display_name}</option>)}
+                    </select>
+                  </label>
+                  <label className="form-label min-w-56 flex-1">Insert product link
+                    <select
+                      className="form-input"
+                      defaultValue=""
+                      onChange={(e) => {
+                        const resource = resourceItems.find((item) => String(item.id) === e.target.value);
+                        if (!resource) return;
+                        insertIntoContent(`\n[View ${String(resource.title)}](/resources/${String(resource.slug)})\n`);
+                        e.target.value = "";
+                      }}
+                    >
+                      <option value="">Choose a resource…</option>
+                      {resourceItems.filter((item) => String(item.status) === "published").map((item) => <option key={String(item.id)} value={String(item.id)}>{String(item.title)}</option>)}
+                    </select>
+                  </label>
+                  <button className="button button-secondary" type="button" onClick={() => insertIntoContent("[Link text](https://example.com)")}><Link2 size={15} /> Insert link</button>
+                </div>
+                <label className="form-label mt-3">Content <span className="text-zinc-700">(Markdown)</span>
+                  <textarea ref={contentTextareaRef} className="form-input min-h-80 font-mono text-sm leading-6" value={contentForm.content} onChange={(e) => updateContent("content", e.target.value)} required />
+                </label>
+              </div>
               <div className="mt-5 grid gap-5 sm:grid-cols-2">
                 <label className="form-label">Tags <span className="text-zinc-700">(comma separated)</span><input className="form-input" value={contentForm.tags} onChange={(e) => updateContent("tags", e.target.value)} /></label>
                 <label className="form-label">Reading time<input className="form-input" type="number" min="1" max="60" value={contentForm.readingMinutes} onChange={(e) => updateContent("readingMinutes", e.target.value)} /></label>
               </div>
-              <label className="form-label mt-5">Cover image URL<input className="form-input" type="url" value={contentForm.coverUrl} onChange={(e) => updateContent("coverUrl", e.target.value)} /></label>
+              <div className="mt-5 grid gap-5 sm:grid-cols-2">
+                <label className="form-label">Cover image from Asset Library
+                  <select className="form-input" value={contentForm.coverAssetId} onChange={(e) => selectCoverAsset(e.target.value)}>
+                    <option value="">No S3 cover selected</option>
+                    {assetItems.filter((asset) => asset.status === "active" && asset.asset_type !== "resource_file").map((asset) => <option key={asset.id} value={asset.id}>{asset.display_name}</option>)}
+                  </select>
+                </label>
+                <label className="form-label">Cover image URL <span className="text-zinc-700">(legacy/external)</span><input className="form-input" value={contentForm.coverUrl} onChange={(e) => { updateContent("coverUrl", e.target.value); if (e.target.value !== `/api/media/${contentForm.coverAssetId}`) updateContent("coverAssetId", ""); }} /></label>
+              </div>
               <div className="mt-7 border-t border-white/10 pt-7">
                 <p className="eyebrow">Search preview</p>
                 <div className="grid gap-5 sm:grid-cols-2">
@@ -781,7 +902,13 @@ export default function AdminConsole() {
               <button className="icon-link" type="button" onClick={() => setResourceEditorOpen(false)} aria-label="Close"><X size={20} /></button>
             </div>
             <form className="mt-7" onSubmit={saveResource}>
-              <div className="grid gap-5 sm:grid-cols-3">
+              <label className="form-label">Prepared resource <span className="text-zinc-700">(optional — fills S3 file, thumbnail, payment type and external URL)</span>
+                <select className="form-input" value={resourceForm.preparedResourceId} onChange={(e) => applyPreparedResource(e.target.value)}>
+                  <option value="">Create without a prepared resource</option>
+                  {preparedResourceItems.filter((item) => item.status === "ready").map((item) => <option key={item.id} value={item.id}>{item.name} · {item.default_type === "paid_product" ? "Paid" : "Free"}</option>)}
+                </select>
+              </label>
+              <div className="mt-5 grid gap-5 sm:grid-cols-3">
                 <label className="form-label">Type
                   <select className="form-input" value={resourceForm.type} onChange={(e) => updateResource("type", e.target.value as "free_resource" | "paid_product")}>
                     <option value="free_resource">Free resource</option>
@@ -808,9 +935,23 @@ export default function AdminConsole() {
                 <label className="form-label">Price<input className="form-input" type="number" min="0" step="0.01" value={resourceForm.price} onChange={(e) => updateResource("price", e.target.value)} /></label>
                 <label className="form-label">Currency<input className="form-input" value={resourceForm.currency} onChange={(e) => updateResource("currency", e.target.value)} maxLength={5} /></label>
               </div>
-              <label className="form-label mt-5">Thumbnail URL<input className="form-input" type="url" value={resourceForm.thumbnailUrl} onChange={(e) => updateResource("thumbnailUrl", e.target.value)} /></label>
-              <label className="form-label mt-5">File URL <span className="text-zinc-700">(admin only — never public)</span><input className="form-input" value={resourceForm.fileUrl} onChange={(e) => updateResource("fileUrl", e.target.value)} /></label>
-              <label className="form-label mt-5">External URL<input className="form-input" type="url" value={resourceForm.externalUrl} onChange={(e) => updateResource("externalUrl", e.target.value)} /></label>
+              <div className="mt-5 grid gap-5 sm:grid-cols-2">
+                <label className="form-label">S3 resource file
+                  <select className="form-input" value={resourceForm.fileAssetId} onChange={(e) => { updateResource("fileAssetId", e.target.value); if (e.target.value) updateResource("fileUrl", ""); }}>
+                    <option value="">No S3 file selected</option>
+                    {assetItems.filter((asset) => asset.status === "active" && asset.asset_type === "resource_file").map((asset) => <option key={asset.id} value={asset.id}>{asset.display_name}</option>)}
+                  </select>
+                </label>
+                <label className="form-label">S3 thumbnail
+                  <select className="form-input" value={resourceForm.thumbnailAssetId} onChange={(e) => selectResourceThumbnail(e.target.value)}>
+                    <option value="">No S3 thumbnail selected</option>
+                    {assetItems.filter((asset) => asset.status === "active" && asset.asset_type !== "resource_file").map((asset) => <option key={asset.id} value={asset.id}>{asset.display_name}</option>)}
+                  </select>
+                </label>
+              </div>
+              <label className="form-label mt-5">Thumbnail URL <span className="text-zinc-700">(auto-filled from S3; external URL still supported)</span><input className="form-input" value={resourceForm.thumbnailUrl} onChange={(e) => { updateResource("thumbnailUrl", e.target.value); if (e.target.value !== `/api/media/${resourceForm.thumbnailAssetId}`) updateResource("thumbnailAssetId", ""); }} /></label>
+              <label className="form-label mt-5">Legacy File URL <span className="text-zinc-700">(optional fallback — S3 file is preferred)</span><input className="form-input" value={resourceForm.fileUrl} onChange={(e) => { updateResource("fileUrl", e.target.value); if (e.target.value) updateResource("fileAssetId", ""); }} /></label>
+              <label className="form-label mt-5">External URL <span className="text-zinc-700">(GitHub, Notion, external tool, etc.)</span><input className="form-input" type="url" value={resourceForm.externalUrl} onChange={(e) => updateResource("externalUrl", e.target.value)} /></label>
               <div className="mt-7 border-t border-white/10 pt-7">
                 <p className="eyebrow">SEO</p>
                 <div className="grid gap-5 sm:grid-cols-2">

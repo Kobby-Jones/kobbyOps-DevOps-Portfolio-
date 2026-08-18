@@ -53,8 +53,15 @@ export default async function ResourcesPage() {
                   {freeResources.map((resource) => (
                     <div
                       key={resource.slug}
-                      className="surface-card flex flex-col p-6"
+                      className="surface-card flex flex-col overflow-hidden"
                     >
+                      {resource.thumbnailUrl && (
+                        <div className="aspect-[16/9] overflow-hidden border-b border-white/10 bg-white/[0.02]">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img className="h-full w-full object-cover" src={resource.thumbnailUrl} alt={`Thumbnail for ${resource.title}`} loading="lazy" />
+                        </div>
+                      )}
+                      <div className="flex flex-1 flex-col p-6">
                       <span className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-emerald-400">
                         <Download size={13} /> Free
                       </span>
@@ -70,6 +77,7 @@ export default async function ResourcesPage() {
                       <Link className="text-link mt-5 inline-flex items-center gap-2 text-sm" href={`/resources/${resource.slug}`}>
                         View resource <ArrowRight size={14} />
                       </Link>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -89,8 +97,15 @@ export default async function ResourcesPage() {
                   {paidProducts.map((product) => (
                     <div
                       key={product.slug}
-                      className="surface-card flex flex-col p-6"
+                      className="surface-card flex flex-col overflow-hidden"
                     >
+                      {product.thumbnailUrl && (
+                        <div className="aspect-[16/9] overflow-hidden border-b border-white/10 bg-white/[0.02]">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img className="h-full w-full object-cover" src={product.thumbnailUrl} alt={`Thumbnail for ${product.title}`} loading="lazy" />
+                        </div>
+                      )}
+                      <div className="flex flex-1 flex-col p-6">
                       <span className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-teal-400">
                         <Lock size={13} /> Premium
                       </span>
@@ -112,6 +127,7 @@ export default async function ResourcesPage() {
                       <Link className="button button-secondary mt-5 w-full justify-center" href={`/resources/${product.slug}`}>
                         View product <ArrowRight size={15} />
                       </Link>
+                      </div>
                     </div>
                   ))}
                 </div>

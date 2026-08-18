@@ -596,3 +596,7 @@ npm run verify:production
 ```
 
 `npm run verify:production` expects the full production environment to be loaded and validates it before the final build.
+
+## S3 Asset Library
+
+The admin now supports private Amazon S3 uploads, an Asset Library, prepared-resource records, S3-backed free/paid downloads, reusable blog/insight media, and resource thumbnails. Run `supabase/005_s3_asset_library.sql` after the existing migrations and follow `docs/AWS_S3_ASSET_LIBRARY_SETUP.md` for AWS/IAM/CORS/environment setup.

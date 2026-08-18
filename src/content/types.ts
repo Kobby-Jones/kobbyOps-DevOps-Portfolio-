@@ -125,6 +125,7 @@ export interface Resource {
   seoTitle?: string;
   seoDescription?: string;
   downloadCount: number;
+  hasDownload?: boolean;
   createdAt: string;
   updatedAt?: string;
 }

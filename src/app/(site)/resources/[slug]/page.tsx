@@ -39,7 +39,8 @@ export default async function ResourceDetailPage({ params }: Props) {
   if (!resource) notFound();
 
   const paid = resource.type === "paid_product";
-  const freeHref = resource.externalUrl || `/api/download/free/${encodeURIComponent(resource.slug)}`;
+  const downloadHref = `/api/download/free/${encodeURIComponent(resource.slug)}`;
+  const freeHref = resource.hasDownload ? downloadHref : resource.externalUrl || downloadHref;
   const productUrl = absoluteUrl(`/resources/${resource.slug}`);
   const productSchema = {
     "@context": "https://schema.org",
@@ -84,6 +85,12 @@ export default async function ResourceDetailPage({ params }: Props) {
         <div className="container-shell">
           <div className="grid gap-10 lg:grid-cols-[1.3fr_0.7fr]">
             <div>
+              {resource.thumbnailUrl && (
+                <figure className="mb-8 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02]">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img className="aspect-[16/9] w-full object-cover" src={resource.thumbnailUrl} alt={`Thumbnail for ${resource.title}`} />
+                </figure>
+              )}
               <h2 className="text-xl font-semibold text-white">About this resource</h2>
               <div className="mt-6">
                 <MarkdownArticle content={resource.description} />
@@ -104,18 +111,43 @@ export default async function ResourceDetailPage({ params }: Props) {
                   <TrackedAnchor
                     className="button button-primary mt-6 w-full justify-center"
                     href={freeHref}
-                    target={resource.externalUrl ? "_blank" : undefined}
-                    rel={resource.externalUrl ? "noreferrer" : undefined}
-                    analyticsLabel="resource_free_download"
+                    target={!resource.hasDownload && resource.externalUrl ? "_blank" : undefined}
+                    rel={!resource.hasDownload && resource.externalUrl ? "noreferrer" : undefined}
+                    analyticsLabel={resource.hasDownload ? "resource_free_download" : "resource_external_open"}
                     analyticsMetadata={{
                       placement: "resource_detail",
                       resourceSlug: resource.slug,
                     }}
                   >
-                    Download free {resource.externalUrl ? <ExternalLink size={16} /> : <Download size={16} />}
+                    {resource.hasDownload ? <>Download free <Download size={16} /></> : <>Open resource <ExternalLink size={16} /></>}
                   </TrackedAnchor>
+                  {resource.hasDownload && resource.externalUrl ? (
+                    <TrackedAnchor
+                      className="button button-secondary mt-3 w-full justify-center"
+                      href={resource.externalUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      analyticsLabel="resource_external_open"
+                      analyticsMetadata={{ placement: "resource_detail_secondary", resourceSlug: resource.slug }}
+                    >
+                      Open external resource <ExternalLink size={16} />
+                    </TrackedAnchor>
+                  ) : null}
                 </div>
               )}
+
+              {paid && resource.externalUrl ? (
+                <TrackedAnchor
+                  className="button button-secondary mt-4 w-full justify-center"
+                  href={resource.externalUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  analyticsLabel="resource_external_open"
+                  analyticsMetadata={{ placement: "paid_resource_detail", resourceSlug: resource.slug }}
+                >
+                  Related external link <ExternalLink size={16} />
+                </TrackedAnchor>
+              ) : null}
 
               {paid ? (
                 <div className="mt-4 flex items-start gap-3 rounded-xl border border-white/10 bg-white/[0.02] p-4 text-xs leading-6 text-zinc-500">

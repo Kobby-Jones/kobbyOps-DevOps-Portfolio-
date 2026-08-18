@@ -165,3 +165,48 @@ test("download route uses the centralized expiry/status decision", async () => {
   assert.match(source, /access\s*===\s*"unauthorized"/);
   assert.match(source, /access\s*===\s*"expired"/);
 });
+
+test("S3 asset library keeps AWS credentials and storage coordinates server-side", async () => {
+  const env = await read(".env.example");
+  assert.match(env, /AWS_ACCESS_KEY_ID=/);
+  assert.match(env, /AWS_SECRET_ACCESS_KEY=/);
+  assert.doesNotMatch(env, /NEXT_PUBLIC_AWS_ACCESS_KEY_ID=/);
+  assert.doesNotMatch(env, /NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY=/);
+
+  const contentSource = await read("src/lib/content.ts");
+  const publicColumnsMatch = contentSource.match(/const RESOURCE_PUBLIC_COLUMNS\s*=\s*([\s\S]*?);/);
+  assert.ok(publicColumnsMatch);
+  assert.doesNotMatch(publicColumnsMatch[1], /file_asset_id|s3_key|bucket/);
+
+  for (const file of [
+    "src/app/(site)/resources/page.tsx",
+    "src/app/(site)/resources/[slug]/page.tsx",
+    "src/components/site/MarkdownArticle.tsx",
+  ]) {
+    const source = await read(file);
+    assert.doesNotMatch(source, /AWS_SECRET_ACCESS_KEY|s3_key|file_asset_id/);
+  }
+});
+
+test("S3 uploads require admin auth and public media cannot serve resource files", async () => {
+  for (const file of [
+    "src/app/api/admin/assets/route.ts",
+    "src/app/api/admin/assets/presign/route.ts",
+    "src/app/api/admin/assets/sync/route.ts",
+    "src/app/api/admin/prepared-resources/route.ts",
+  ]) {
+    const source = await read(file);
+    assert.match(source, /isAdminAuthenticated/);
+    assert.match(source, /await\s+isAdminAuthenticated\s*\(\s*\)/);
+  }
+
+  const presign = await read("src/app/api/admin/assets/presign/route.ts");
+  assert.match(presign, /createPresignedUpload/);
+  const media = await read("src/app/api/media/[id]/route.ts");
+  assert.match(media, /MEDIA_TYPES/);
+  assert.doesNotMatch(media.match(/const MEDIA_TYPES[\s\S]*?;/)?.[0] || "", /resource_file/);
+
+  const migration = await read("supabase/005_s3_asset_library.sql");
+  assert.match(migration, /alter table public\.media_assets enable row level security/i);
+  assert.match(migration, /alter table public\.prepared_resources enable row level security/i);
+});

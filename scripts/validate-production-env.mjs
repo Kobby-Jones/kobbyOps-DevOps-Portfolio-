@@ -14,6 +14,11 @@ const required = [
   "PAYMENT_SECRET_KEY",
   "PAYMENT_PUBLIC_KEY",
   "PAYMENT_WEBHOOK_SECRET",
+  "AWS_REGION",
+  "AWS_ACCESS_KEY_ID",
+  "AWS_SECRET_ACCESS_KEY",
+  "AWS_S3_RESOURCE_BUCKET",
+  "AWS_S3_MEDIA_BUCKET",
 ];
 
 const missing = required.filter((name) => !String(process.env[name] || "").trim());
@@ -38,6 +43,8 @@ const forbiddenPublicSecrets = [
   "NEXT_PUBLIC_ANALYTICS_SALT",
   "NEXT_PUBLIC_PAYMENT_SECRET_KEY",
   "NEXT_PUBLIC_PAYMENT_WEBHOOK_SECRET",
+  "NEXT_PUBLIC_AWS_ACCESS_KEY_ID",
+  "NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY",
 ];
 
 const exposed = forbiddenPublicSecrets.filter((name) => String(process.env[name] || "").trim());

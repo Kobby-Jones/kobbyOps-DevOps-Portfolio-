@@ -165,6 +165,7 @@ type ResourceRow = {
   seo_title: string | null;
   seo_description: string | null;
   download_count: number;
+  has_download: boolean;
   created_at: string;
   updated_at: string | null;
 };
@@ -186,13 +187,14 @@ const toResource = (row: ResourceRow): Resource => ({
   seoTitle: row.seo_title || undefined,
   seoDescription: row.seo_description || undefined,
   downloadCount: row.download_count,
+  hasDownload: Boolean(row.has_download),
   createdAt: row.created_at,
   updatedAt: row.updated_at || undefined,
 });
 
 // Public columns — file_url is intentionally excluded
 const RESOURCE_PUBLIC_COLUMNS =
-  "id,title,slug,short_description,description,type,category,price,currency,thumbnail_url,external_url,status,featured,seo_title,seo_description,download_count,created_at,updated_at";
+  "id,title,slug,short_description,description,type,category,price,currency,thumbnail_url,external_url,status,featured,seo_title,seo_description,download_count,has_download,created_at,updated_at";
 
 export async function getResources(type?: Resource["type"]): Promise<Resource[]> {
   const supabase = createPublicSupabaseClient();

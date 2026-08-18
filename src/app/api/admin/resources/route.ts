@@ -29,7 +29,40 @@ export async function POST(request: Request) {
   try {
     const input = await request.json();
     const payload = parseResourcePayload(input as Record<string, unknown>);
-    const { id, ...values } = payload;
+    const { id, ...parsedValues } = payload;
+    const values = { ...parsedValues };
+
+    if (values.file_asset_id) {
+      const { data: fileAsset, error: fileAssetError } = await supabase
+        .from("media_assets")
+        .select("id,asset_type,status")
+        .eq("id", values.file_asset_id)
+        .single();
+      if (fileAssetError || !fileAsset || fileAsset.status !== "active" || fileAsset.asset_type !== "resource_file") {
+        return NextResponse.json({ error: "Select a valid active S3 resource file." }, { status: 400 });
+      }
+      values.file_url = null;
+    }
+
+    if (values.thumbnail_asset_id) {
+      const { data: thumbnail, error: thumbnailError } = await supabase
+        .from("media_assets")
+        .select("id,asset_type,status")
+        .eq("id", values.thumbnail_asset_id)
+        .single();
+      if (thumbnailError || !thumbnail || thumbnail.status !== "active" || thumbnail.asset_type === "resource_file") {
+        return NextResponse.json({ error: "Select a valid active S3 image for the thumbnail." }, { status: 400 });
+      }
+      values.thumbnail_url = `/api/media/${thumbnail.id}`;
+    }
+
+    values.has_download = Boolean(values.file_asset_id || values.file_url);
+    if (values.type === "paid_product" && !values.has_download) {
+      return NextResponse.json({ error: "Paid products require an S3 resource file or legacy HTTPS file URL." }, { status: 400 });
+    }
+    if (values.type === "free_resource" && !values.has_download && !values.external_url) {
+      return NextResponse.json({ error: "Free resources require an S3 file, legacy file URL, or external URL." }, { status: 400 });
+    }
 
     const result = id
       ? await supabase.from("resources").update(values).eq("id", id).select("*").single()

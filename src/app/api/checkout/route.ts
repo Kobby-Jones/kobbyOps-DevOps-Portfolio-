@@ -1,6 +1,5 @@
 import { randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
-import { absoluteUrl } from "@/lib/site";
 import { createAdminSupabaseClient } from "@/lib/supabase";
 import { getPaymentProvider, PaymentConfigurationError } from "@/lib/payments";
 import type { PaymentProvider } from "@/lib/payments/types";
@@ -23,7 +22,7 @@ export async function POST(request: Request) {
 
     const { data: resource, error: resourceError } = await supabase
       .from("resources")
-      .select("id,title,slug,type,price,currency,status,file_url")
+      .select("id,title,slug,type,price,currency,status,file_url,file_asset_id")
       .eq("id", resourceId)
       .single();
 
@@ -33,7 +32,9 @@ export async function POST(request: Request) {
     if (resource.type !== "paid_product" || Number(resource.price) <= 0) {
       return NextResponse.json({ error: "This resource does not require checkout." }, { status: 400 });
     }
-    if (!resource.file_url || !isAllowedFileUrl(String(resource.file_url))) {
+    const hasS3File = Boolean(resource.file_asset_id);
+    const hasLegacyFile = Boolean(resource.file_url && isAllowedFileUrl(String(resource.file_url)));
+    if (!hasS3File && !hasLegacyFile) {
       return NextResponse.json({ error: "This product is not available for purchase." }, { status: 409 });
     }
 
@@ -78,7 +79,7 @@ export async function POST(request: Request) {
         amountMinor,
         currency,
         reference: paymentReference,
-        callbackUrl: absoluteUrl(`/order/complete?reference=${encodeURIComponent(paymentReference)}`),
+        callbackUrl: new URL(`/order/complete?reference=${encodeURIComponent(paymentReference)}`, request.url).toString(),
         metadata: {
           order_id: String(order.id),
           resource_id: String(resource.id),
