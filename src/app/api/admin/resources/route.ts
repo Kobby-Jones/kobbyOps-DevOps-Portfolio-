@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
 import { createAdminSupabaseClient } from "@/lib/supabase";
 import { parseResourcePayload } from "@/lib/validation";
+import { revalidatePath } from "next/cache";
 
 const unauthorized = () => NextResponse.json({ error: "Unauthorized." }, { status: 401 });
 const unavailable = () => NextResponse.json({ error: "Supabase is not configured." }, { status: 503 });
@@ -39,6 +40,15 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: result.error.message }, { status });
     }
 
+    revalidatePath("/resources");
+
+    if (result.data?.slug) {
+      revalidatePath(`/resources/${result.data.slug}`);
+    }
+
+    revalidatePath("/sitemap.xml");
+    revalidatePath("/feed.xml");
+
     return NextResponse.json({ item: result.data }, { status: id ? 200 : 201 });
   } catch (error) {
     return NextResponse.json(
@@ -58,5 +68,10 @@ export async function DELETE(request: Request) {
 
   const { error } = await supabase.from("resources").delete().eq("id", id);
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+
+  revalidatePath("/resources");
+  revalidatePath("/sitemap.xml");
+  revalidatePath("/feed.xml");
+  
   return NextResponse.json({ ok: true });
 }
