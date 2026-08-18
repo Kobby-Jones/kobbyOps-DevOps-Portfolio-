@@ -877,7 +877,7 @@ select:focus-visible {
 .hero-section.vanta-hero-active > .vanta-canvas,
 .page-hero.vanta-hero-active > .vanta-canvas {
   z-index: 0 !important;
-  opacity: 0.15 !important;
+  opacity: 0.16 !important;
   pointer-events: none !important;
 }
 
