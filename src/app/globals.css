@@ -109,7 +109,7 @@ button:disabled {
 .nav-link {
   border-radius: 0.75rem;
   padding: 0.65rem 0.78rem;
-  color: #a1a1aa;
+  color: #d4d4d8;
   font-size: 0.84rem;
   font-weight: 550;
 }
@@ -122,6 +122,74 @@ button:disabled {
 .nav-link-active {
   background: rgba(45, 212, 191, 0.08);
   color: #5eead4;
+}
+
+/* ── Navbar dropdown trigger ─────────────────────────────────────────────── */
+
+.nav-dropdown-trigger {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* ── Desktop dropdown panel ──────────────────────────────────────────────── */
+
+.nav-dropdown {
+  position: absolute;
+  top: calc(100% + 0.35rem);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  min-width: 260px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  background: #0a0a0c;
+  padding: 0.35rem;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.04);
+  animation: dropdownFadeIn 120ms ease;
+}
+
+.nav-dropdown-item {
+  display: block;
+  border-radius: 0.7rem;
+  padding: 0.65rem 0.85rem;
+  text-decoration: none;
+  transition: background 120ms ease;
+}
+
+.nav-dropdown-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.nav-dropdown-item-label {
+  display: block;
+  color: #e4e4e7;
+  font-size: 0.84rem;
+  font-weight: 550;
+  line-height: 1.4;
+}
+
+.nav-dropdown-item:hover .nav-dropdown-item-label {
+  color: #ffffff;
+}
+
+.nav-dropdown-item-desc {
+  display: block;
+  margin-top: 0.15rem;
+  color: #5eead4;
+  font-size: 0.72rem;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
 }
 
 .button {
@@ -288,7 +356,7 @@ button:disabled {
 
 .floating-card span {
   margin-top: 0.12rem;
-  color: #71717a;
+  color: #a1a1aa;
   font-size: 0.61rem;
 }
 
@@ -314,7 +382,7 @@ button:disabled {
 .page-description {
   margin-top: 1.5rem;
   max-width: 47rem;
-  color: #a1a1aa;
+  color: #d4d4d8;
   font-size: clamp(1rem, 2vw, 1.14rem);
   line-height: 1.85;
 }
@@ -349,7 +417,7 @@ button:disabled {
 .section-description {
   margin-top: 1rem;
   max-width: 44rem;
-  color: #71717a;
+  color: #a1a1aa;
   font-size: 0.97rem;
   line-height: 1.8;
 }
@@ -380,7 +448,7 @@ button:disabled {
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.025);
   padding: 0.32rem 0.6rem;
-  color: #a1a1aa;
+  color: #d4d4d8;
   font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
   font-size: 0.65rem;
   font-weight: 550;
@@ -410,7 +478,7 @@ button:disabled {
   border: 1px solid rgba(255, 255, 255, 0.09);
   border-radius: 0.75rem;
   background: rgba(255, 255, 255, 0.025);
-  color: #a1a1aa;
+  color: #d4d4d8;
 }
 
 .icon-link:hover,
@@ -503,7 +571,7 @@ button:disabled {
 }
 
 .footer-link {
-  color: #71717a;
+  color: #a1a1aa;
   font-size: 0.84rem;
 }
 
@@ -513,7 +581,7 @@ button:disabled {
 
 .form-label {
   display: block;
-  color: #a1a1aa;
+  color: #d4d4d8;
   font-size: 0.76rem;
   font-weight: 650;
 }
@@ -522,10 +590,10 @@ button:disabled {
   display: block;
   width: 100%;
   margin-top: 0.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 0.75rem;
   outline: none;
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.04);
   padding: 0.78rem 0.9rem;
   color: #f4f4f5;
   font-size: 0.87rem;
@@ -533,12 +601,53 @@ button:disabled {
 }
 
 .form-input::placeholder {
-  color: #52525b;
+  color: #71717a;
+}
+
+.form-input:hover {
+  border-color: rgba(255, 255, 255, 0.28);
 }
 
 .form-input:focus {
   border-color: rgba(45, 212, 191, 0.55);
   box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.08);
+}
+
+/* ── Dark select/option fix ──────────────────────────────────────────────── */
+/* Native <option> elements ignore most CSS but respect color-scheme and
+   background/color on the option itself. These rules ensure dropdown menus
+   render with a dark background and light text across all browsers. */
+
+select.form-input {
+  color-scheme: dark;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%2371717a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4 6 4 4 4-4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1rem;
+  padding-right: 2.5rem;
+}
+
+select.form-input option {
+  background: #18181b;
+  color: #f4f4f5;
+  padding: 0.5rem;
+}
+
+select.form-input option:checked {
+  background: #2dd4bf;
+  color: #09090b;
+}
+
+/* Admin editor selects inherit the same fix */
+.admin-shell select {
+  color-scheme: dark;
+}
+
+.admin-shell select option {
+  background: #18181b;
+  color: #f4f4f5;
 }
 
 .contact-row {
@@ -567,7 +676,7 @@ button:disabled {
 
 .contact-row small {
   margin-top: 0.15rem;
-  color: #71717a;
+  color: #a1a1aa;
   font-size: 0.68rem;
 }
 
@@ -630,7 +739,7 @@ button:disabled {
   border-left: 3px solid #2dd4bf;
   background: rgba(45, 212, 191, 0.045);
   padding: 1rem 1.25rem;
-  color: #d4d4d8;
+  color: #a1a1aa;
 }
 
 .prose-article code {
@@ -662,20 +771,29 @@ button:disabled {
   color: #f4f4f5;
 }
 
+
+.admin-tab-list {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(113, 113, 122, 0.7) transparent;
+  overscroll-behavior-x: contain;
+}
+
 .admin-tab {
   display: inline-flex;
+  flex: none;
   align-items: center;
+  white-space: nowrap;
   gap: 0.45rem;
   border-bottom: 2px solid transparent;
   padding: 0.85rem 0.25rem;
   margin-right: 1.4rem;
-  color: #71717a;
+  color: #a1a1aa;
   font-size: 0.82rem;
   font-weight: 650;
 }
 
 .admin-tab:hover {
-  color: #d4d4d8;
+  color: #a1a1aa;
 }
 
 .admin-tab-active {
@@ -726,6 +844,11 @@ select:focus-visible {
   }
 }
 
+/* ── Brighten Tailwind grey utilities for dark-background legibility ────── */
+.text-zinc-600 { color: #71717a !important; }
+.text-zinc-500 { color: #a1a1aa !important; }
+.text-zinc-400 { color: #d4d4d8 !important; }
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -738,5 +861,51 @@ select:focus-visible {
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── Professional Vanta NET hero treatment ─────────────────────────────── */
+.hero-section.vanta-hero-active,
+.page-hero.vanta-hero-active {
+  isolation: isolate;
+}
+
+
+
+/* Vanta is animation only. Its background is transparent so the existing
+   hero gradients, grid, glow, and original opacity treatment remain intact. */
+.hero-section.vanta-hero-active > .vanta-canvas,
+.page-hero.vanta-hero-active > .vanta-canvas {
+  z-index: 0 !important;
+  opacity: 0.2 !important;
+  pointer-events: none !important;
+}
+
+.hero-section.vanta-hero-active > .hero-grid,
+.hero-section.vanta-hero-active > .hero-glow {
+  z-index: 1;
+}
+
+.hero-section.vanta-hero-active > .container-shell,
+.page-hero.vanta-hero-active > .container-shell {
+  position: relative;
+  z-index: 2;
+}
+
+.vanta-hero-fallback {
+  background-color: var(--background);
+}
+
+@media (max-width: 767px) {
+  .hero-section.vanta-hero-active > .vanta-canvas,
+  .page-hero.vanta-hero-active > .vanta-canvas {
+    opacity: 0.3 !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-section > .vanta-canvas,
+  .page-hero > .vanta-canvas {
+    display: none !important;
   }
 }

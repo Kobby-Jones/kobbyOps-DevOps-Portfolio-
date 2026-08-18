@@ -31,7 +31,7 @@ The visual identity keeps the original KobbyOps dark zinc, teal, and emerald pal
 
 | Area | Technology |
 | --- | --- |
-| Application | Next.js 15 App Router, React 19, TypeScript |
+| Application | Next.js 16 App Router, React 19, TypeScript |
 | Styling | Tailwind CSS 4 and a custom design system |
 | Icons | Lucide and React Icons |
 | Rich content | Markdown rendered with `react-markdown` |
@@ -488,3 +488,111 @@ supabase/
 - [ ] `npm run build` passes.
 - [ ] Mobile navigation and contact form are tested.
 - [ ] Sitemap is submitted after deployment.
+
+## Commerce foundation (Phase 3)
+
+Paid resources use server-side Paystack initialization and webhook confirmation. The browser never receives `PAYMENT_SECRET_KEY`, `PAYMENT_WEBHOOK_SECRET`, or a resource `file_url`.
+
+### Database migration
+
+After `supabase/002_business_platform.sql`, run:
+
+```text
+supabase/003_commerce_foundation.sql
+```
+
+This migration makes payment references unique, adds an atomic download-count function for the service role, and removes anon/authenticated SELECT access to the private `resources.file_url` column.
+
+### Payment environment variables
+
+Add these server-side variables locally and in Vercel:
+
+```dotenv
+PAYMENT_SECRET_KEY=
+PAYMENT_PUBLIC_KEY=
+PAYMENT_WEBHOOK_SECRET=
+```
+
+The current provider adapter is Paystack. Checkout initialization happens only on the server. `PAYMENT_PUBLIC_KEY` is kept as provider configuration for future client-side provider features and is not exposed by the current implementation.
+
+For Paystack, configure the payment webhook endpoint as:
+
+```text
+https://cobbinaemmanuel.tech/api/webhooks/payment
+```
+
+Set `PAYMENT_WEBHOOK_SECRET` to the secret used to validate Paystack webhook HMAC signatures (for Paystack this is normally the Paystack secret key). The webhook is authoritative: returning from the payment page does not mark an order as paid.
+
+### Commerce routes
+
+| Route | Purpose |
+| --- | --- |
+| `/resources/[slug]` | Public free/paid resource detail and checkout page |
+| `/api/checkout` | Creates a pending order and initializes Paystack |
+| `/api/webhooks/payment` | Verifies payment webhook and issues a 48-hour download token |
+| `/order/complete` | Payment-provider return page that waits for webhook confirmation |
+| `/order/[token]` | Confirmed purchase page |
+| `/api/download/[token]` | Paid file proxy with paid/expiry checks |
+| `/api/download/free/[slug]` | Free file proxy when no external URL is configured |
+| `/api/admin/orders` | Admin-authenticated read-only order list |
+
+Paid files are streamed through the application instead of redirecting to the stored `file_url`, so the private file location is not disclosed to the purchaser.
+
+## SEO & analytics (Phase 4)
+
+Phase 4 extends the existing SEO and privacy-friendly analytics systems without replacing them.
+
+### Database migration
+
+After `supabase/003_commerce_foundation.sql`, run:
+
+```text
+supabase/004_seo_analytics.sql
+```
+
+The migration keeps every existing analytics row as a `page_view` and adds fields for named conversion events and small non-sensitive metadata. Do not store customer names, email addresses, payment references, secrets, or resource file URLs in analytics metadata.
+
+### Structured data
+
+- Service detail pages emit `schema.org/Service` JSON-LD and reference the site's existing `Person` entity as the provider.
+- Resource detail pages emit `schema.org/Product` JSON-LD with a server-rendered `Offer` using the resource's configured price and currency.
+- Published resource detail pages are included in the dynamic sitemap.
+
+### RSS
+
+`/feed.xml` now includes published:
+
+- blog posts
+- insights
+- services
+- free resources
+- paid digital products
+
+### Conversion events
+
+The existing `site_events` table now distinguishes normal traffic from funnel actions:
+
+| Event | Meaning |
+| --- | --- |
+| `page_view` | Existing privacy-friendly page view |
+| `service_view` | A service detail page was viewed |
+| `cta_click` | A tracked Work With Me/service/free-resource CTA was clicked |
+| `checkout_initiated` | A paid-resource checkout was successfully initialized before redirecting to Paystack |
+
+The Analytics tab keeps page-view totals separate and shows 30-day service views, CTA clicks, checkout starts, and recent conversion activity.
+
+## Phase 5 verification
+
+Phase 5 security, responsive, and accessibility regression coverage is documented in [`docs/PHASE5_TESTING.md`](docs/PHASE5_TESTING.md).
+
+Useful commands:
+
+```bash
+npm run test:security
+npm run typecheck
+npm run lint
+npm run build
+npm run verify:production
+```
+
+`npm run verify:production` expects the full production environment to be loaded and validates it before the final build.

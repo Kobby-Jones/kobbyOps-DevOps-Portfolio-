@@ -1,12 +1,17 @@
 import Link from "next/link";
 import { Github, Linkedin, Mail, MapPin } from "lucide-react";
 import { siteConfig } from "@/lib/site";
+import NewsletterSignup from "./NewsletterSignup";
 
 const footerLinks = [
   { href: "/about", label: "About" },
-  { href: "/projects", label: "Projects" },
+  { href: "/projects", label: "Engineering" },
+  { href: "/services", label: "Services" },
   { href: "/blog", label: "Blog" },
   { href: "/insights", label: "Insights" },
+  { href: "/resources", label: "Resources" },
+  { href: "/research", label: "Research" },
+  { href: "/work-with-me", label: "Work With Me" },
   { href: "/contact", label: "Contact" },
   { href: "/privacy", label: "Privacy" },
 ];
@@ -15,6 +20,15 @@ export default function Footer() {
   return (
     <footer className="border-t border-white/10 bg-zinc-950">
       <div className="container-shell py-12 md:py-16">
+        {/* Newsletter bar */}
+        <div className="mb-10 rounded-2xl border border-white/10 bg-white/[0.02] p-6 md:flex md:items-center md:justify-between md:gap-8 md:p-8">
+          <div className="mb-4 shrink-0 md:mb-0">
+            <p className="font-semibold text-white">Get practical engineering resources</p>
+            <p className="mt-1 text-sm text-zinc-500">Technical guides, deployment checklists, and new resources — no spam.</p>
+          </div>
+          <NewsletterSignup className="flex-1" />
+        </div>
+
         <div className="grid gap-10 md:grid-cols-[1.2fr_0.8fr_0.8fr]">
           <div className="max-w-md">
             <div className="flex items-center gap-3">

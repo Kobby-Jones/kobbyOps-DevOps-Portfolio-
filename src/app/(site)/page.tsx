@@ -6,8 +6,6 @@ import {
   Award,
   CheckCircle2,
   Cloud,
-  Code2,
-  Download,
   MapPin,
   ServerCog,
 } from "lucide-react";
@@ -15,6 +13,7 @@ import ArticleCard from "@/components/site/ArticleCard";
 import ProjectCard from "@/components/site/ProjectCard";
 import SectionHeading from "@/components/site/SectionHeading";
 import SkillGrid from "@/components/site/SkillGrid";
+import TrackedLink from "@/components/site/TrackedLink";
 import { certifications, experience } from "@/content/profile";
 import { getArticles, getProjects } from "@/lib/content";
 import { siteConfig } from "@/lib/site";
@@ -30,7 +29,7 @@ export default async function HomePage() {
       <section className="hero-section">
         <div className="hero-grid" aria-hidden="true" />
         <div className="hero-glow" aria-hidden="true" />
-        <div className="container-shell relative py-20 md:py-28 lg:py-32">
+        <div className="container-shell relative py-10 md:py-12 lg:py-14">
           <div className="grid items-center gap-14 lg:grid-cols-[1.12fr_0.88fr]">
             <div>
               <div className="status-pill">
@@ -38,18 +37,23 @@ export default async function HomePage() {
                 Building dependable systems from Ghana
               </div>
               <h1 className="hero-title mt-7">
-                Cobbina Emmanuel builds <span>secure software</span> and cloud platforms that hold up in production.
+                Engineering systems, <span>not just applications.</span>
               </h1>
               <p className="mt-7 max-w-2xl text-base leading-8 text-zinc-400 md:text-lg md:leading-9">
-                I am a Software & Cloud Engineer working across backend systems, AWS infrastructure, containers, CI/CD, platform engineering, and full-stack product delivery.
+                I design, build, and deploy dependable backend and cloud-native systems — and I help organisations turn software into reliable production systems.
               </p>
               <div className="mt-9 flex flex-wrap gap-3">
-                <Link className="button button-primary" href="/projects">
-                  Explore selected work <ArrowRight size={17} />
+                <TrackedLink
+                  className="button button-primary"
+                  href="/work-with-me"
+                  analyticsLabel="home_work_with_me"
+                  analyticsMetadata={{ placement: "hero" }}
+                >
+                  Work with me <ArrowRight size={17} />
+                </TrackedLink>
+                <Link className="button button-secondary" href="/projects">
+                  View engineering work <ArrowUpRight size={16} />
                 </Link>
-                <a className="button button-secondary" href={siteConfig.resume} download>
-                  Download CV <Download size={16} />
-                </a>
               </div>
               <div className="mt-9 flex flex-wrap gap-x-6 gap-y-3 text-sm text-zinc-500">
                 <span className="inline-flex items-center gap-2"><MapPin size={15} className="text-teal-400" /> {siteConfig.location}</span>
@@ -112,7 +116,7 @@ export default async function HomePage() {
       Cloud-native application delivery
     </p>
     <p className="mt-1 text-sm text-zinc-400">
-      Secure APIs · Platform automation · Reliable operations
+      Secure APIs <span className="text-teal-200 text-[1rem]">·</span> Platform automation <span className="text-teal-200 text-[1rem]">·</span> Reliable operations
     </p>
   </div>
 </div>
@@ -150,7 +154,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="section-space border-y border-white/10 bg-zinc-900/30">
+      <section className="section border-y border-white/10 bg-zinc-900/30">
         <div className="container-shell">
           <SectionHeading
             eyebrow="Capabilities"
@@ -184,14 +188,14 @@ export default async function HomePage() {
                     </div>
                     <p className="mt-1 text-sm text-teal-400">{item.organization}</p>
                   </div>
-                  <time className="text-xs text-zinc-500">{item.period}</time>
+                  <time className="text-xs text-zinc-300">{item.period}</time>
                 </article>
               ))}
               <div className="grid gap-3 pt-3 sm:grid-cols-2">
                 {certifications.map((certification) => (
                   <div className="surface-card flex gap-3 p-4" key={certification.name}>
                     <CheckCircle2 size={18} className="mt-0.5 shrink-0 text-emerald-400" />
-                    <div><p className="text-sm font-medium text-zinc-200">{certification.name}</p><p className="mt-1 text-xs text-zinc-600">{certification.issuer} · {certification.year}</p></div>
+                    <div><p className="text-sm font-medium text-zinc-200">{certification.name}</p><p className="mt-1 text-xs text-zinc-500">{certification.issuer} · {certification.year}</p></div>
                   </div>
                 ))}
               </div>
@@ -200,7 +204,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="section-space border-t border-white/10 bg-zinc-900/30">
+      <section className="section border-t border-white/10 bg-zinc-900/30">
         <div className="container-shell">
           <SectionHeading
             eyebrow="Writing & insights"
@@ -226,7 +230,14 @@ export default async function HomePage() {
                 Let&apos;s discuss the system, the constraints, and the delivery path.
               </p>
             </div>
-            <Link className="button button-primary shrink-0" href="/contact">Contact me <Code2 size={17} /></Link>
+            <TrackedLink
+              className="button button-primary shrink-0"
+              href="/work-with-me"
+              analyticsLabel="home_work_with_me"
+              analyticsMetadata={{ placement: "bottom_cta" }}
+            >
+              Work with me <ArrowRight size={17} />
+            </TrackedLink>
           </div>
         </div>
       </section>

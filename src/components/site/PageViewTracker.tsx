@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
+import { getAnalyticsVisitorId } from "@/lib/client-analytics";
 
 export default function PageViewTracker() {
   const pathname = usePathname();
@@ -9,12 +10,8 @@ export default function PageViewTracker() {
   useEffect(() => {
     if (navigator.doNotTrack === "1") return;
 
-    const key = "kobbyops_visitor";
-    let visitorId = window.localStorage.getItem(key);
-    if (!visitorId) {
-      visitorId = crypto.randomUUID();
-      window.localStorage.setItem(key, visitorId);
-    }
+    const visitorId = getAnalyticsVisitorId();
+    if (!visitorId) return;
 
     void fetch("/api/analytics/visit", {
       method: "POST",

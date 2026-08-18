@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowLeft, Clock3 } from "lucide-react";
 import type { Article } from "@/content/types";
 import MarkdownArticle from "./MarkdownArticle";
+import ServiceCTA from "./ServiceCTA";
 
 export default function ArticleDetail({ article }: { article: Article }) {
   const section = article.type === "blog" ? "blog" : "insights";
@@ -39,6 +40,7 @@ export default function ArticleDetail({ article }: { article: Article }) {
             </figure>
           )}
           <MarkdownArticle content={article.content} />
+          <ServiceCTA />
         </div>
       </section>
     </article>

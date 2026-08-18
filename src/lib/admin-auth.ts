@@ -1,4 +1,4 @@
-import { createHmac, timingSafeEqual } from "node:crypto";
+import { createSignedSessionToken, safeStringEqual, verifySignedSessionToken } from "./admin-session.mjs";
 import { cookies } from "next/headers";
 
 const COOKIE_NAME = "kobbyops_admin";
@@ -8,35 +8,21 @@ function secret() {
   return process.env.ADMIN_SESSION_SECRET || "";
 }
 
-function sign(expires: string) {
-  return createHmac("sha256", secret()).update(expires).digest("hex");
-}
-
-function safeEqual(left: string, right: string) {
-  const leftBuffer = Buffer.from(left);
-  const rightBuffer = Buffer.from(right);
-  return leftBuffer.length === rightBuffer.length && timingSafeEqual(leftBuffer, rightBuffer);
-}
-
 export function adminAuthConfigured() {
   return Boolean(process.env.ADMIN_PASSWORD && process.env.ADMIN_SESSION_SECRET);
 }
 
 export function verifyAdminPassword(password: string) {
   const expected = process.env.ADMIN_PASSWORD || "";
-  return expected.length > 0 && safeEqual(password, expected);
+  return expected.length > 0 && safeStringEqual(password, expected);
 }
 
 export function createAdminSessionToken() {
-  const expires = String(Math.floor(Date.now() / 1000) + SESSION_SECONDS);
-  return `${expires}.${sign(expires)}`;
+  return createSignedSessionToken(secret(), Date.now() / 1000, SESSION_SECONDS);
 }
 
 export function verifyAdminSessionToken(token?: string) {
-  if (!token || !secret()) return false;
-  const [expires, signature] = token.split(".");
-  if (!expires || !signature || Number(expires) < Math.floor(Date.now() / 1000)) return false;
-  return safeEqual(signature, sign(expires));
+  return verifySignedSessionToken(token, secret(), Date.now() / 1000);
 }
 
 export async function isAdminAuthenticated() {
