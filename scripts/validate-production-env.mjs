@@ -19,6 +19,9 @@ const required = [
   "AWS_SECRET_ACCESS_KEY",
   "AWS_S3_RESOURCE_BUCKET",
   "AWS_S3_MEDIA_BUCKET",
+  "RESEND_API_KEY",
+  "EMAIL_FROM",
+  "CONSULTATION_NOTIFICATION_EMAIL",
 ];
 
 const missing = required.filter((name) => !String(process.env[name] || "").trim());
@@ -45,6 +48,7 @@ const forbiddenPublicSecrets = [
   "NEXT_PUBLIC_PAYMENT_WEBHOOK_SECRET",
   "NEXT_PUBLIC_AWS_ACCESS_KEY_ID",
   "NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY",
+  "NEXT_PUBLIC_RESEND_API_KEY",
 ];
 
 const exposed = forbiddenPublicSecrets.filter((name) => String(process.env[name] || "").trim());

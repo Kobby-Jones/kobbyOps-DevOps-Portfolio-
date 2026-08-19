@@ -210,3 +210,27 @@ test("S3 uploads require admin auth and public media cannot serve resource files
   assert.match(migration, /alter table public\.media_assets enable row level security/i);
   assert.match(migration, /alter table public\.prepared_resources enable row level security/i);
 });
+
+test("consultation requests notify the owner without exposing email credentials", async () => {
+  const route = await read("src/app/api/consultation/route.ts");
+  const email = await read("src/lib/email.ts");
+  const env = await read(".env.example");
+
+  const insertAt = route.indexOf('.from("consultation_requests")');
+  const emailAt = route.indexOf("const delivery = await sendConsultationEmails");
+  assert.ok(insertAt >= 0, "Consultation route must persist the lead.");
+  assert.ok(emailAt > insertAt, "Email notification must happen only after the lead is persisted.");
+  assert.match(route, /confirmationSent:\s*delivery\.confirmation\.ok/);
+  assert.match(email, /process\.env\.RESEND_API_KEY/);
+  assert.match(email, /Authorization:\s*`Bearer \$\{apiKey\}`/);
+  assert.match(email, /reply_to/);
+  assert.match(env, /RESEND_API_KEY=/);
+  assert.doesNotMatch(env, /NEXT_PUBLIC_RESEND_API_KEY=/);
+
+  for (const file of [
+    "src/components/site/ConsultationForm.tsx",
+    "src/app/(site)/work-with-me/page.tsx",
+  ]) {
+    assert.doesNotMatch(await read(file), /RESEND_API_KEY|EMAIL_FROM/);
+  }
+});

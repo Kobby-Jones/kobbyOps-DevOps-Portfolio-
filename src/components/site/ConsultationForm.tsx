@@ -42,6 +42,7 @@ export default function ConsultationForm() {
   });
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const [confirmationSent, setConfirmationSent] = useState(false);
 
   function update(key: string, value: string) {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -72,6 +73,7 @@ export default function ConsultationForm() {
         return;
       }
 
+      setConfirmationSent(Boolean(result.confirmationSent));
       setStatus("success");
     } catch {
       setErrorMessage("Could not submit. Please check your connection and try again.");
@@ -89,6 +91,7 @@ export default function ConsultationForm() {
         <p className="mt-3 max-w-md text-sm leading-7 text-zinc-400">
           Thank you for reaching out. I review every request personally and will
           respond within 1–2 business days.
+          {confirmationSent ? " A confirmation email has also been sent to you." : ""}
         </p>
       </div>
     );
