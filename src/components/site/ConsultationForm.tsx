@@ -29,17 +29,17 @@ const timelineOptions = [
 ];
 
 export default function ConsultationForm() {
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    organization: "",
-    serviceRequested: "",
-    projectDescription: "",
-    budgetRange: "",
-    timeline: "",
-    websiteUrl: "",
-    website: "", // honeypot
-  });
+const [form, setForm] = useState({
+  name: "",
+  email: "",
+  organization: "",
+  serviceRequested: "",
+  projectDescription: "",
+  budgetRange: "",
+  timeline: "",
+  websiteUrl: "",
+  contactCode: "", // honeypot
+});
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
   const [confirmationSent, setConfirmationSent] = useState(false);
@@ -102,9 +102,9 @@ export default function ConsultationForm() {
       {/* Honeypot */}
       <input
         type="text"
-        name="website"
-        value={form.website}
-        onChange={(e) => update("website", e.target.value)}
+        name="contactCode"
+        value={form.contactCode}
+        onChange={(e) => update("contactCode", e.target.value)}
         className="absolute -left-[9999px] h-0 w-0 opacity-0"
         tabIndex={-1}
         autoComplete="off"

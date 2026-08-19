@@ -5,7 +5,6 @@ import { ArrowRight, CheckCircle2, LoaderCircle } from "lucide-react";
 
 export default function NewsletterSignup({ className = "" }: { className?: string }) {
   const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
   const [company, setCompany] = useState(""); // honeypot
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [error, setError] = useState("");

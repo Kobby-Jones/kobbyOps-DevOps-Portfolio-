@@ -13,9 +13,9 @@ export async function POST(request: Request) {
   const input = await request.json().catch(() => ({}));
 
   // Honeypot field
-  if (cleanText(input.website, 100) && !cleanText(input.websiteUrl, 100)) {
-    return NextResponse.json({ ok: true }, { status: 201 });
-  }
+  if (cleanText(input.contactCode, 100)) {
+  return NextResponse.json({ ok: true }, { status: 201 });
+}
 
   try {
     const payload = parseConsultationPayload(input as Record<string, unknown>);
