@@ -35,9 +35,9 @@ export default async function ProjectsPage() {
       <section className="page-hero">
         <div className="container-shell max-w-4xl text-center">
           <p className="eyebrow">Selected work</p>
-          <h1 className="page-title">Projects explained as engineering systems, not repository tiles.</h1>
+          <h1 className="page-title">Engineering projects with the design decisions and source code in view.</h1>
           <p className="page-description mx-auto">
-            Each case study covers the problem, system approach, core capabilities, technology choices, architecture media where available, and the real source repository.
+            Each case study covers the problem, implementation approach, core capabilities, technology choices, architecture material where available and the source repository.
           </p>
         </div>
       </section>

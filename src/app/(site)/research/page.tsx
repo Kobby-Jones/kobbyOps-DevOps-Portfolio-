@@ -17,7 +17,7 @@ const interests = [
     icon: <Globe size={20} />,
   },
   {
-    title: "Scalable Infrastructure & Platform Engineering",
+    title: "Scalable Infrastructure and Platform Engineering",
     description:
       "Exploring declarative infrastructure management, GitOps delivery models, and platform abstractions that reduce cognitive load for engineering teams operating distributed systems.",
     icon: <Layers size={20} />,
@@ -25,7 +25,7 @@ const interests = [
   {
     title: "AI-Enabled Software Systems",
     description:
-      "Studying how applied AI can augment software system workflows — classification, routing, anomaly detection, and decision support — in contexts where explainability and institutional trust matter.",
+      "Studying how applied AI can support software workflows such as classification, routing, anomaly detection and decision support, especially where explainability and institutional trust matter.",
     icon: <FlaskConical size={20} />,
   },
   {
@@ -46,9 +46,7 @@ export default function ResearchPage() {
             Exploring the intersection of cloud-native systems and intelligent software.
           </h1>
           <p className="section-description max-w-2xl">
-            My long-term trajectory connects software engineering practice with
-            research — from production systems today toward cloud-native
-            intelligent systems, graduate study, and published work.
+            My long-term direction connects software engineering practice with research, with a focus on cloud-native intelligent systems and future graduate study.
           </p>
         </div>
       </section>
@@ -83,26 +81,23 @@ export default function ResearchPage() {
           <div className="grid gap-10 lg:grid-cols-2">
             <div>
               <h2 className="text-xl font-semibold text-white">
-                Academic trajectory
+                Research direction
               </h2>
               <p className="mt-4 text-sm leading-7 text-zinc-400">
-                My professional path is designed to bridge engineering practice and
-                academic research. The commercial consulting work provides the
-                real-world systems experience that grounds future research in practical
-                relevance.
+                My work currently sits between engineering practice and research. Commercial and institutional projects provide practical systems experience that can inform future academic work.
               </p>
               <div className="mt-6 space-y-3">
                 {[
-                  ["Current", "Software & Cloud Engineering"],
-                  ["Active", "DevOps & Platform Engineering"],
+                  ["Current", "Software and Cloud Engineering"],
+                  ["Active", "DevOps and Platform Engineering"],
                   ["Exploring", "Cloud-Native Intelligent Systems"],
-                  ["Planned", "Graduate Research (MPhil → PhD)"],
+                  ["Planned", "Graduate research (MPhil, then PhD)"],
                 ].map(([stage, label]) => (
                   <div
                     key={label}
                     className="flex items-center gap-3 text-sm text-zinc-300"
                   >
-                    <span className="w-20 shrink-0 text-xs font-medium uppercase tracking-wider text-teal-400">
+                    <span className="w-20 shrink-0 text-xs font-semibold tracking-[0.03em] text-teal-400">
                       {stage}
                     </span>
                     {label}
@@ -113,7 +108,7 @@ export default function ResearchPage() {
 
             <div className="surface-card p-6">
               <h3 className="font-semibold text-white">
-                Publications & presentations
+                Publications and presentations
               </h3>
               <p className="mt-4 text-sm leading-7 text-zinc-400">
                 No formal publications yet. As research progresses, this section will

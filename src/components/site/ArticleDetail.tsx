@@ -21,8 +21,8 @@ export default function ArticleDetail({ article }: { article: Article }) {
           <h1 className="page-title">{article.title}</h1>
           <p className="page-description max-w-3xl">{article.excerpt}</p>
           <div className="mt-7 flex flex-wrap items-center gap-3 text-sm text-zinc-500">
-            <span>Cobbina Emmanuel</span><span aria-hidden="true">·</span>
-            <time dateTime={article.publishedAt}>{date}</time><span aria-hidden="true">·</span>
+            <span>Cobbina Emmanuel</span>
+            <time dateTime={article.publishedAt}>{date}</time>
             <span className="inline-flex items-center gap-1.5"><Clock3 size={14} /> {article.readingMinutes} min read</span>
           </div>
           <div className="mt-6 flex flex-wrap gap-2">

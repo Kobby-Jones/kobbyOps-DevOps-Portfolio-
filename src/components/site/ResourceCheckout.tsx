@@ -4,7 +4,19 @@ import { LoaderCircle, LockKeyhole } from "lucide-react";
 import { useState } from "react";
 import { trackAnalyticsEvent } from "@/lib/client-analytics";
 
-export default function ResourceCheckout({ resourceId, resourceSlug }: { resourceId: string; resourceSlug: string }) {
+export default function ResourceCheckout({
+  resourceId,
+  resourceSlug,
+  displayPrice,
+  priceLabel = "Price",
+  priceNote,
+}: {
+  resourceId: string;
+  resourceSlug: string;
+  displayPrice?: string;
+  priceLabel?: string;
+  priceNote?: string;
+}) {
   const [customerName, setCustomerName] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
   const [loading, setLoading] = useState(false);
@@ -43,7 +55,15 @@ export default function ResourceCheckout({ resourceId, resourceSlug }: { resourc
   }
 
   return (
-    <form className="surface-card p-6" onSubmit={checkout}>
+    <form className="surface-card overflow-hidden" onSubmit={checkout}>
+      {displayPrice ? (
+        <div className="resource-checkout-price">
+          <p className="resource-product-price-label">{priceLabel}</p>
+          <p className="resource-product-price">{displayPrice}</p>
+          {priceNote ? <p className="resource-product-price-note">{priceNote}</p> : null}
+        </div>
+      ) : null}
+      <div className="p-6">
       <div className="flex items-center gap-2 text-sm font-medium text-white">
         <LockKeyhole size={16} className="text-teal-400" /> Secure checkout
       </div>
@@ -76,8 +96,9 @@ export default function ResourceCheckout({ resourceId, resourceSlug }: { resourc
       {error ? <p className="mt-4 text-sm text-rose-400" role="alert">{error}</p> : null}
       <button className="button button-primary mt-6 w-full justify-center" type="submit" disabled={loading}>
         {loading ? <LoaderCircle className="animate-spin" size={16} /> : null}
-        {loading ? "Opening payment" : "Purchase"}
+        {loading ? "Opening payment" : "Purchase securely"}
       </button>
+      </div>
     </form>
   );
 }

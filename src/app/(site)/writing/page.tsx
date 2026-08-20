@@ -10,7 +10,7 @@ export const revalidate = 300;
 export const metadata: Metadata = {
   title: "Writing",
   description:
-    "Technical articles, engineering notes, and short-form insights on cloud engineering, DevOps, backend systems, and software architecture.",
+    "Technical articles, engineering notes, and shorter insights on cloud engineering, DevOps, backend systems, and software architecture.",
   alternates: { canonical: "/writing" },
 };
 
@@ -25,11 +25,10 @@ export default async function WritingPage() {
         <div className="container-shell">
           <p className="eyebrow">Writing</p>
           <h1 className="page-title max-w-3xl">
-            Technical writing and engineering notes.
+            Articles and engineering notes.
           </h1>
           <p className="section-description max-w-2xl">
-            Long-form articles on real engineering problems and short-form insights on
-            systems, patterns, and practice.
+            Longer articles on engineering problems, alongside shorter notes on systems, patterns and operational practice.
           </p>
         </div>
       </section>
@@ -40,7 +39,7 @@ export default async function WritingPage() {
             <SectionHeading
               eyebrow="Blog"
               title="Technical articles"
-              description="Deep dives into deployment, infrastructure, architecture, and engineering decisions."
+              description="Detailed articles on deployment, infrastructure, architecture and engineering decisions."
             />
             <div className="mt-10 grid gap-7 md:grid-cols-2">
               {blogs.map((article) => (
@@ -61,8 +60,8 @@ export default async function WritingPage() {
           <div className="container-shell">
             <SectionHeading
               eyebrow="Insights"
-              title="Short-form observations"
-              description="Concise notes on engineering patterns, system design, and operational practice."
+              title="Short engineering notes"
+              description="Concise notes on engineering patterns, system design and operational practice."
             />
             <div className="mt-10 grid gap-7 md:grid-cols-2">
               {insights.map((article) => (

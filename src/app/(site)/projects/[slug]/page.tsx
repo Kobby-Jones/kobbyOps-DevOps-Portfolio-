@@ -63,7 +63,7 @@ export default async function ProjectPage({ params }: PageProps) {
         <header className="page-hero">
           <div className="container-shell max-w-5xl">
             <Link className="text-link mb-8" href="/projects"><ArrowLeft size={15} /> All projects</Link>
-            <p className="eyebrow">{project.eyebrow} · {project.year}</p>
+            <p className="eyebrow">{project.eyebrow}, {project.year}</p>
             <h1 className="page-title max-w-4xl">{project.title}</h1>
             <p className="page-description max-w-3xl">{project.summary}</p>
             <div className="mt-8 flex flex-wrap gap-3">
@@ -120,9 +120,9 @@ export default async function ProjectPage({ params }: PageProps) {
         {project.media && project.media.length > 0 && (
           <section className="section-space border-t border-white/10 bg-zinc-900/30">
             <div className="container-shell max-w-6xl">
-              <p className="eyebrow">Architecture & evidence</p>
-              <h2 className="section-title">See how the system moves.</h2>
-              <p className="section-description">Architecture diagrams, animated data flows, and deployment evidence live with the case study.</p>
+              <p className="eyebrow">Architecture and evidence</p>
+              <h2 className="section-title">Architecture, deployment and system flow.</h2>
+              <p className="section-description">Diagrams, data flows and deployment evidence provide additional context for the implementation.</p>
               <div className="mt-10 grid gap-6 lg:grid-cols-2">
                 {project.media.map((media) => (
                   <figure className="overflow-hidden rounded-2xl border border-white/10 bg-zinc-950" key={media.url}>
@@ -147,7 +147,7 @@ export default async function ProjectPage({ params }: PageProps) {
         <section className="section-space border-t border-white/10">
           <div className="container-shell max-w-5xl">
             <div className="cta-panel">
-              <div><p className="eyebrow">Discuss this work</p><h2 className="text-2xl font-semibold text-white md:text-3xl">Interested in the architecture or a similar build?</h2></div>
+              <div><p className="eyebrow">Discuss this work</p><h2 className="text-2xl font-semibold text-white md:text-3xl">Working on a similar system or architecture?</h2></div>
               <Link className="button button-primary" href="/contact">Start a conversation <ArrowUpRight size={16} /></Link>
             </div>
           </div>

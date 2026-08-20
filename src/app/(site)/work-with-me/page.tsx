@@ -17,11 +17,10 @@ export default function WorkWithMePage() {
         <div className="container-shell">
           <p className="eyebrow">Work with me</p>
           <h1 className="page-title max-w-3xl">
-            Let&apos;s build something dependable together.
+            Tell me what you are building and where you need support.
           </h1>
           <p className="section-description max-w-2xl">
-            Tell me about your project, constraints, and timeline. I review every
-            request personally and respond within 1–2 business days.
+            Share the project context, constraints and timeline. I review each request personally and usually respond within 1–2 business days.
           </p>
         </div>
       </section>
@@ -39,11 +38,11 @@ export default function WorkWithMePage() {
                 <ul className="mt-4 space-y-3 text-sm leading-7 text-zinc-400">
                   <li>
                     <strong className="text-zinc-200">Response within 1–2 days.</strong>{" "}
-                    I read and respond to every serious inquiry.
+                    I read and respond to each project enquiry.
                   </li>
                   <li>
                     <strong className="text-zinc-200">No obligation.</strong>{" "}
-                    An initial conversation helps us both determine if the fit is right.
+                    An initial conversation helps us decide whether the engagement is a good fit.
                   </li>
                   <li>
                     <strong className="text-zinc-200">Clear scope and pricing.</strong>{" "}

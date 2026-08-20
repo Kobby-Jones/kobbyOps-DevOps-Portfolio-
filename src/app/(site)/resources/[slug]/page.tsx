@@ -7,19 +7,13 @@ import MarkdownArticle from "@/components/site/MarkdownArticle";
 import ResourceCheckout from "@/components/site/ResourceCheckout";
 import TrackedAnchor from "@/components/site/TrackedAnchor";
 import { getResourceBySlug } from "@/lib/content";
+import { resourceCategoryLabel } from "@/lib/resource-labels";
+import { getVisitorPricingContext, presentResourcePrice } from "@/lib/resource-pricing";
 import { absoluteUrl } from "@/lib/site";
 
 export const revalidate = 300;
 
 type Props = { params: Promise<{ slug: string }> };
-
-function formatPrice(amount: number, currency: string) {
-  try {
-    return new Intl.NumberFormat("en", { style: "currency", currency }).format(amount);
-  } catch {
-    return `${currency} ${amount.toFixed(2)}`;
-  }
-}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
@@ -35,10 +29,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ResourceDetailPage({ params }: Props) {
   const { slug } = await params;
-  const resource = await getResourceBySlug(slug);
+  const [resource, pricingContext] = await Promise.all([
+    getResourceBySlug(slug),
+    getVisitorPricingContext(),
+  ]);
   if (!resource) notFound();
 
   const paid = resource.type === "paid_product";
+  const price = paid
+    ? presentResourcePrice(resource.price, resource.currency, pricingContext)
+    : null;
   const downloadHref = `/api/download/free/${encodeURIComponent(resource.slug)}`;
   const freeHref = resource.hasDownload ? downloadHref : resource.externalUrl || downloadHref;
   const productUrl = absoluteUrl(`/resources/${resource.slug}`);
@@ -72,11 +72,17 @@ export default async function ResourceDetailPage({ params }: Props) {
           <p className="eyebrow">{paid ? "Premium product" : "Free resource"}</p>
           <h1 className="page-title max-w-3xl">{resource.title}</h1>
           <p className="section-description max-w-2xl">{resource.shortDescription}</p>
-          <div className="mt-5 flex flex-wrap items-center gap-3">
-            <span className="tech-pill capitalize">{resource.category.replace("_", "/")}</span>
-            <span className="text-lg font-semibold text-white">
-              {paid ? formatPrice(resource.price, resource.currency) : "Free"}
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            <span className="resource-category-chip resource-category-chip-large">
+              {resourceCategoryLabel(resource.category)}
             </span>
+            <div className="resource-detail-price">
+              <span className="resource-product-price-label">
+                {paid ? price?.currencyLabel : "Access"}
+              </span>
+              <strong>{paid ? price?.primary : "Free"}</strong>
+              {paid && price?.note ? <small>{price.note}</small> : null}
+            </div>
           </div>
         </div>
       </section>
@@ -99,14 +105,22 @@ export default async function ResourceDetailPage({ params }: Props) {
 
             <aside>
               {paid ? (
-                resource.id ? <ResourceCheckout resourceId={resource.id} resourceSlug={resource.slug} /> : null
+                resource.id ? (
+                  <ResourceCheckout
+                    resourceId={resource.id}
+                    resourceSlug={resource.slug}
+                    displayPrice={price?.primary}
+                    priceLabel={price?.currencyLabel}
+                    priceNote={price?.note}
+                  />
+                ) : null
               ) : (
                 <div className="surface-card p-6">
                   <span className="inline-flex items-center gap-2 text-sm font-medium text-white">
                     <Download size={16} className="text-teal-400" /> Available now
                   </span>
                   <p className="mt-3 text-sm leading-7 text-zinc-400">
-                    This resource is free. Use the button below to open or download it.
+                    This resource is free to access. Use the button below to download the file or open the external resource.
                   </p>
                   <TrackedAnchor
                     className="button button-primary mt-6 w-full justify-center"
@@ -152,7 +166,7 @@ export default async function ResourceDetailPage({ params }: Props) {
               {paid ? (
                 <div className="mt-4 flex items-start gap-3 rounded-xl border border-white/10 bg-white/[0.02] p-4 text-xs leading-6 text-zinc-500">
                   <Lock size={15} className="mt-0.5 shrink-0 text-teal-400" />
-                  Download access is issued only after the payment provider webhook confirms the transaction.
+                  Download access is issued only after the payment provider confirms the transaction.
                 </div>
               ) : null}
             </aside>

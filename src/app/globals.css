@@ -95,15 +95,14 @@ button:disabled {
   flex: none;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(45, 212, 191, 0.26);
   border-radius: 0.8rem;
-  background: linear-gradient(135deg, rgba(20, 184, 166, 0.16), rgba(16, 185, 129, 0.05));
-  color: #5eead4;
-  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-  font-size: 0.8rem;
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07), 0 12px 28px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+
+.brand-mark-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .nav-link {
@@ -272,8 +271,8 @@ button:disabled {
   color: #ffffff;
   font-size: clamp(2.55rem, 5.6vw, 5.25rem);
   font-weight: 650;
-  letter-spacing: -0.064em;
-  line-height: 0.99;
+  letter-spacing: -0.045em;
+  line-height: 1.02;
 }
 
 .hero-title span {
@@ -292,11 +291,9 @@ button:disabled {
   background: rgba(16, 185, 129, 0.055);
   padding: 0.5rem 0.8rem;
   color: #a7f3d0;
-  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  letter-spacing: 0.01em;
 }
 
 .profile-frame {
@@ -317,8 +314,12 @@ button:disabled {
   content: "";
 }
 
-.profile-frame-circle,
+.profile-frame-circle {
+  border-radius: 9999px;
+}
+
 .profile-frame-circle::before {
+  inset: -0.85rem;
   border-radius: 9999px;
 }
 
@@ -375,8 +376,8 @@ button:disabled {
   color: #ffffff;
   font-size: clamp(2.45rem, 5.6vw, 4.85rem);
   font-weight: 650;
-  letter-spacing: -0.058em;
-  line-height: 1.03;
+  letter-spacing: -0.04em;
+  line-height: 1.06;
 }
 
 .page-description {
@@ -390,11 +391,9 @@ button:disabled {
 .eyebrow {
   margin-bottom: 0.9rem;
   color: #2dd4bf;
-  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
 }
 
 .section-heading {
@@ -410,8 +409,8 @@ button:disabled {
   color: #ffffff;
   font-size: clamp(2rem, 4vw, 3.45rem);
   font-weight: 640;
-  letter-spacing: -0.052em;
-  line-height: 1.08;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
 }
 
 .section-description {
@@ -532,10 +531,9 @@ button:disabled {
   display: inline-flex;
   border-radius: 999px;
   padding: 0.22rem 0.5rem;
-  font-size: 0.6rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-size: 0.65rem;
+  font-weight: 650;
+  letter-spacing: 0.02em;
 }
 
 .current-badge,
@@ -564,10 +562,9 @@ button:disabled {
 
 .footer-title {
   color: #f4f4f5;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font-size: 0.78rem;
+  font-weight: 650;
+  letter-spacing: 0.02em;
 }
 
 .footer-link {
@@ -840,7 +837,7 @@ select:focus-visible {
   }
 
   .hero-title {
-    letter-spacing: -0.05em;
+    letter-spacing: -0.035em;
   }
 }
 
@@ -908,4 +905,170 @@ select:focus-visible {
   .page-hero > .vanta-canvas {
     display: none !important;
   }
+}
+
+/* ── Resource storefront ─────────────────────────────────────────────────── */
+.resource-product-card {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1.15rem;
+  background:
+    radial-gradient(circle at 90% 0%, rgba(20, 184, 166, 0.08), transparent 34%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.018));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.045),
+    0 24px 70px rgba(0, 0, 0, 0.2);
+  transition: border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+}
+
+.resource-product-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(45, 212, 191, 0.22);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.055),
+    0 30px 90px rgba(0, 0, 0, 0.28),
+    0 0 0 1px rgba(20, 184, 166, 0.035);
+}
+
+.resource-product-media {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+  background: #0b1011;
+}
+
+.resource-product-media-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(9, 9, 11, 0.48), transparent 48%);
+  pointer-events: none;
+}
+
+.resource-product-placeholder {
+  display: grid;
+  height: 100%;
+  width: 100%;
+  place-items: center;
+  color: rgba(94, 234, 212, 0.55);
+  background:
+    linear-gradient(rgba(45, 212, 191, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(45, 212, 191, 0.055) 1px, transparent 1px),
+    radial-gradient(circle at 50% 30%, rgba(20, 184, 166, 0.15), transparent 48%);
+  background-size: 28px 28px, 28px 28px, auto;
+}
+
+.resource-product-type-badge {
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  background: rgba(9, 9, 11, 0.8);
+  padding: 0.45rem 0.65rem;
+  color: #f4f4f5;
+  font-size: 0.72rem;
+  font-weight: 650;
+  line-height: 1;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.24);
+}
+
+.resource-category-chip {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  border: 1px solid rgba(45, 212, 191, 0.18);
+  border-radius: 999px;
+  background: rgba(20, 184, 166, 0.07);
+  padding: 0.38rem 0.62rem;
+  color: #99f6e4;
+  font-size: 0.72rem;
+  font-weight: 650;
+  line-height: 1.2;
+}
+
+.resource-category-chip-large {
+  padding: 0.48rem 0.72rem;
+  font-size: 0.78rem;
+}
+
+.resource-product-price-panel {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(90deg, rgba(20, 184, 166, 0.045), rgba(255, 255, 255, 0.015));
+  padding: 1rem 0;
+}
+
+.resource-product-price-label {
+  color: #71717a;
+  font-size: 0.7rem;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+}
+
+.resource-product-price {
+  margin-top: 0.18rem;
+  color: #ffffff;
+  font-size: clamp(1.45rem, 3vw, 1.8rem);
+  font-weight: 680;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+}
+
+.resource-product-price-note {
+  margin-top: 0.32rem;
+  color: #71717a;
+  font-size: 0.7rem;
+  line-height: 1.45;
+}
+
+.resource-detail-price {
+  display: inline-flex;
+  min-width: 9rem;
+  flex-direction: column;
+  border-left: 1px solid rgba(45, 212, 191, 0.22);
+  padding-left: 0.9rem;
+}
+
+.resource-detail-price strong {
+  margin-top: 0.12rem;
+  color: #ffffff;
+  font-size: 1.35rem;
+  font-weight: 680;
+  letter-spacing: -0.02em;
+}
+
+.resource-detail-price small {
+  margin-top: 0.18rem;
+  color: #71717a;
+  font-size: 0.7rem;
+}
+
+.resource-checkout-price {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+  background:
+    radial-gradient(circle at 100% 0%, rgba(20, 184, 166, 0.12), transparent 42%),
+    rgba(20, 184, 166, 0.035);
+  padding: 1.25rem 1.5rem;
+}
+
+.resource-product-type-badge-premium {
+  border-color: rgba(45, 212, 191, 0.24);
+  background: rgba(13, 148, 136, 0.18);
+  color: #ccfbf1;
+}
+
+.resource-product-type-badge-free {
+  border-color: rgba(52, 211, 153, 0.2);
+  background: rgba(16, 185, 129, 0.14);
+  color: #d1fae5;
 }

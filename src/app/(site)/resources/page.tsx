@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { ArrowRight, Download, Lock } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import NewsletterSignup from "@/components/site/NewsletterSignup";
+import ResourceProductCard from "@/components/site/ResourceProductCard";
 import SectionHeading from "@/components/site/SectionHeading";
 import TrackedLink from "@/components/site/TrackedLink";
 import { getResources } from "@/lib/content";
+import { getVisitorPricingContext } from "@/lib/resource-pricing";
 
 export const revalidate = 300;
 
@@ -16,9 +17,10 @@ export const metadata: Metadata = {
 };
 
 export default async function ResourcesPage() {
-  const [freeResources, paidProducts] = await Promise.all([
+  const [freeResources, paidProducts, pricingContext] = await Promise.all([
     getResources("free_resource"),
     getResources("paid_product"),
+    getVisitorPricingContext(),
   ]);
 
   const hasContent = freeResources.length > 0 || paidProducts.length > 0;
@@ -33,7 +35,7 @@ export default async function ResourcesPage() {
           </h1>
           <p className="section-description max-w-2xl">
             Checklists, deployment kits, and technical guides built from real
-            production experience. Free resources are available immediately — paid
+            production experience. Free resources are available immediately. Paid
             products include deeper material and source files.
           </p>
         </div>
@@ -46,39 +48,16 @@ export default async function ResourcesPage() {
               <div className="container-shell">
                 <SectionHeading
                   eyebrow="Free resources"
-                  title="Start here — no cost, no signup."
+                  title="Useful resources you can access immediately."
                   description="Practical checklists and guides you can use right away."
                 />
                 <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
                   {freeResources.map((resource) => (
-                    <div
+                    <ResourceProductCard
                       key={resource.slug}
-                      className="surface-card flex flex-col overflow-hidden"
-                    >
-                      {resource.thumbnailUrl && (
-                        <div className="aspect-[16/9] overflow-hidden border-b border-white/10 bg-white/[0.02]">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img className="h-full w-full object-cover" src={resource.thumbnailUrl} alt={`Thumbnail for ${resource.title}`} loading="lazy" />
-                        </div>
-                      )}
-                      <div className="flex flex-1 flex-col p-6">
-                      <span className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-emerald-400">
-                        <Download size={13} /> Free
-                      </span>
-                      <h3 className="mt-3 font-semibold text-white">
-                        {resource.title}
-                      </h3>
-                      <p className="mt-2 flex-1 text-sm leading-7 text-zinc-400">
-                        {resource.shortDescription}
-                      </p>
-                      <span className="mt-1 text-xs text-zinc-600 capitalize">
-                        {resource.category.replace("_", "/")}
-                      </span>
-                      <Link className="text-link mt-5 inline-flex items-center gap-2 text-sm" href={`/resources/${resource.slug}`}>
-                        View resource <ArrowRight size={14} />
-                      </Link>
-                      </div>
-                    </div>
+                      resource={resource}
+                      pricingContext={pricingContext}
+                    />
                   ))}
                 </div>
               </div>
@@ -90,45 +69,16 @@ export default async function ResourcesPage() {
               <div className="container-shell">
                 <SectionHeading
                   eyebrow="Premium products"
-                  title="Go deeper with production-ready material."
-                  description="Templates, deployment kits, and project packs with source files and documentation."
+                  title="Detailed guides, templates and project files."
+                  description="Paid resources with supporting files, documentation and practical implementation material."
                 />
                 <div className="mt-10 grid gap-5 md:grid-cols-2">
                   {paidProducts.map((product) => (
-                    <div
+                    <ResourceProductCard
                       key={product.slug}
-                      className="surface-card flex flex-col overflow-hidden"
-                    >
-                      {product.thumbnailUrl && (
-                        <div className="aspect-[16/9] overflow-hidden border-b border-white/10 bg-white/[0.02]">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img className="h-full w-full object-cover" src={product.thumbnailUrl} alt={`Thumbnail for ${product.title}`} loading="lazy" />
-                        </div>
-                      )}
-                      <div className="flex flex-1 flex-col p-6">
-                      <span className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-teal-400">
-                        <Lock size={13} /> Premium
-                      </span>
-                      <h3 className="mt-3 font-semibold text-white">
-                        {product.title}
-                      </h3>
-                      <p className="mt-2 flex-1 text-sm leading-7 text-zinc-400">
-                        {product.shortDescription}
-                      </p>
-                      <div className="mt-4 flex items-center justify-between">
-                        <span className="text-lg font-semibold text-white">
-                          {product.currency === "USD" ? "$" : product.currency}
-                          {product.price}
-                        </span>
-                        <span className="text-xs text-zinc-600 capitalize">
-                          {product.category.replace("_", "/")}
-                        </span>
-                      </div>
-                      <Link className="button button-secondary mt-5 w-full justify-center" href={`/resources/${product.slug}`}>
-                        View product <ArrowRight size={15} />
-                      </Link>
-                      </div>
-                    </div>
+                      resource={product}
+                      pricingContext={pricingContext}
+                    />
                   ))}
                 </div>
               </div>
@@ -143,7 +93,7 @@ export default async function ResourcesPage() {
                 Resources are on the way
               </h2>
               <p className="mt-4 text-sm leading-7 text-zinc-400">
-                I am currently building production-grade checklists, deployment kits, and
+                I am currently building practical checklists, deployment kits, and
                 technical guides. Subscribe below to be the first to know when they
                 launch.
               </p>
@@ -169,7 +119,7 @@ export default async function ResourcesPage() {
             </h2>
             <p className="mt-3 text-sm leading-7 text-zinc-400">
               Technical guides, deployment checklists, and engineering resources
-              delivered to your inbox — no spam.
+              delivered to your inbox. No unnecessary emails.
             </p>
             <NewsletterSignup className="mt-6" />
           </div>

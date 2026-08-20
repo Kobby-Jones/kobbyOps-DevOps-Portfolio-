@@ -4,7 +4,7 @@ export const projects: Project[] = [
   {
     slug: "ai-public-service-workflow-engine",
     title: "AI-Enabled Public Service Workflow Engine",
-    eyebrow: "Cloud platform · Applied AI",
+    eyebrow: "Cloud platform and applied AI",
     summary:
       "A transparent request-management platform for Ghanaian municipalities, combining citizen reporting, role-based staff workflows, SLA automation, explainable routing, audit trails, and production deployment controls.",
     challenge:
@@ -35,7 +35,7 @@ export const projects: Project[] = [
   {
     slug: "offline-first-itsm-platform",
     title: "Offline-First IT Service Management Platform",
-    eyebrow: "Platform engineering · Full stack",
+    eyebrow: "Platform engineering and full-stack development",
     summary:
       "A multi-platform ITSM system for Ghanaian organisations that keeps essential ticket workflows available during unreliable connectivity and synchronises work when service returns.",
     challenge:
@@ -61,7 +61,7 @@ export const projects: Project[] = [
   {
     slug: "ml-data-loss-prevention",
     title: "ML-Based Data Loss Prevention System",
-    eyebrow: "Security engineering · Machine learning",
+    eyebrow: "Security engineering and machine learning",
     summary:
       "A privacy-conscious DLP platform for small accounting firms that classifies document sensitivity, evaluates user behaviour, and applies an explainable policy response.",
     challenge:
@@ -86,7 +86,7 @@ export const projects: Project[] = [
   {
     slug: "kubernetes-gitops-react-deployment",
     title: "Kubernetes GitOps Delivery with Argo CD",
-    eyebrow: "DevOps · GitOps",
+    eyebrow: "DevOps and GitOps",
     summary:
       "A reproducible delivery path for a containerised React application using NGINX, Kubernetes manifests, and Argo CD reconciliation.",
     challenge:
@@ -128,7 +128,7 @@ export const projects: Project[] = [
   {
     slug: "docker-compose-three-tier-application",
     title: "Three-Tier Application with Docker Compose",
-    eyebrow: "Containers · Application architecture",
+    eyebrow: "Containers and application architecture",
     summary:
       "A containerised three-tier system joining a React frontend, Node.js API, and MySQL database through a repeatable Docker Compose environment.",
     challenge:
@@ -163,7 +163,7 @@ export const projects: Project[] = [
   {
     slug: "idempotency-payment-gateway",
     title: "Idempotency Gateway for Safe Payment Retries",
-    eyebrow: "Backend engineering · Reliability",
+    eyebrow: "Backend engineering and reliability",
     summary:
       "A FastAPI gateway that prevents duplicate payment processing by binding each request body to an idempotency key and replaying completed responses safely.",
     challenge:

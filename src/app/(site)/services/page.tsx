@@ -15,7 +15,7 @@ export const revalidate = 300;
 export const metadata: Metadata = {
   title: "Services",
   description:
-    "Professional software and cloud engineering services — Cloud & DevOps, Backend Engineering, Production Readiness Audits, and Architecture Consulting.",
+    "Software and cloud engineering services covering Cloud and DevOps, Backend Engineering, Production Readiness Audits, and Architecture Consulting.",
   alternates: { canonical: "/services" },
 };
 
@@ -38,9 +38,7 @@ export default async function ServicesPage() {
             Engineering services for teams that need systems to work in production.
           </h1>
           <p className="section-description max-w-2xl">
-            I help organisations design, build, deploy, and operate reliable software
-            systems. Every engagement starts with understanding your constraints and
-            delivering outcomes — not just deliverables.
+            I help organisations design, build, deploy and operate reliable software systems. Each engagement starts with the technical context, constraints and delivery requirements.
           </p>
         </div>
       </section>
@@ -83,13 +81,12 @@ export default async function ServicesPage() {
         <div className="container-shell">
           <div className="cta-panel">
             <div>
-              <p className="eyebrow">Ready to start?</p>
+              <p className="eyebrow">Project enquiries</p>
               <h2 className="max-w-2xl text-3xl font-semibold tracking-tight text-white md:text-4xl">
-                Let&apos;s discuss what you need and how I can help.
+                Tell me what you are building and where you need support.
               </h2>
               <p className="mt-4 max-w-2xl text-base leading-7 text-zinc-400">
-                Tell me about your project, timeline, and constraints. I respond to
-                every serious inquiry.
+                Share the project context, timeline and constraints. I respond personally to project enquiries.
               </p>
             </div>
             <TrackedLink

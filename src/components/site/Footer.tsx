@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Github, Linkedin, Mail, MapPin } from "lucide-react";
 import { siteConfig } from "@/lib/site";
@@ -24,7 +25,7 @@ export default function Footer() {
         <div className="mb-10 rounded-2xl border border-white/10 bg-white/[0.02] p-6 md:flex md:items-center md:justify-between md:gap-8 md:p-8">
           <div className="mb-4 shrink-0 md:mb-0">
             <p className="font-semibold text-white">Get practical engineering resources</p>
-            <p className="mt-1 text-sm text-zinc-500">Technical guides, deployment checklists, and new resources — no spam.</p>
+            <p className="mt-1 text-sm text-zinc-500">Technical guides, deployment checklists and new resources. No unnecessary emails.</p>
           </div>
           <NewsletterSignup className="flex-1" />
         </div>
@@ -32,10 +33,18 @@ export default function Footer() {
         <div className="grid gap-10 md:grid-cols-[1.2fr_0.8fr_0.8fr]">
           <div className="max-w-md">
             <div className="flex items-center gap-3">
-              <span className="brand-mark" aria-hidden="true">CE</span>
+              <span className="brand-mark" aria-hidden="true">
+                <Image
+                  src="/android-chrome-192x192.png"
+                  alt=""
+                  width={44}
+                  height={44}
+                  className="brand-mark-logo"
+                />
+              </span>
               <div>
                 <p className="font-semibold text-white">Cobbina Emmanuel</p>
-                <p className="text-sm text-zinc-500">Software & Cloud Engineer</p>
+                <p className="text-sm text-zinc-500">Software and Cloud Engineer</p>
               </div>
             </div>
             <p className="mt-5 text-sm leading-7 text-zinc-400">
@@ -79,7 +88,7 @@ export default function Footer() {
 
         <div className="mt-12 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs text-zinc-600 sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} Cobbina Emmanuel. All rights reserved.</p>
-          <p>Designed for clarity, accessibility, and search discovery.</p>
+          <p>Built with accessibility, performance and clear navigation in mind.</p>
         </div>
       </div>
     </footer>

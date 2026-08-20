@@ -20,7 +20,7 @@ export const experience: ExperienceItem[] = [
     period: "January 2024 - Present",
     current: true,
     details: [
-      "Build scalable backend APIs and integrations for web and mobile products.",
+      "Build backend APIs and integrations for web and mobile products.",
       "Deliver full-stack systems with Python, Django, Node.js, and PostgreSQL.",
       "Integrate third-party services and AI capabilities into production-oriented applications.",
     ],
@@ -37,7 +37,7 @@ export const experience: ExperienceItem[] = [
   },
   {
     role: "Cloud Engineering Intern",
-    organization: "AmaliTech · AWS re/Start",
+    organization: "AmaliTech, AWS re/Start",
     location: "Remote",
     period: "September 2024 - January 2025",
     details: [

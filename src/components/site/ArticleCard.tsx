@@ -21,9 +21,7 @@ export default function ArticleCard({ article }: { article: Article }) {
       )}
       <div className="flex flex-wrap items-center gap-3 text-xs font-medium text-zinc-500">
         <span className="capitalize text-teal-400">{article.type}</span>
-        <span aria-hidden="true">·</span>
         <time dateTime={article.publishedAt}>{date}</time>
-        <span aria-hidden="true">·</span>
         <span className="inline-flex items-center gap-1.5">
           <Clock3 size={13} aria-hidden="true" /> {article.readingMinutes} min read
         </span>

@@ -23,9 +23,9 @@ export default function ContactPage() {
       <section className="page-hero">
         <div className="container-shell max-w-4xl text-center">
           <p className="eyebrow">Contact</p>
-          <h1 className="page-title">Let&apos;s discuss the system you need to build, improve, or deliver.</h1>
+          <h1 className="page-title">Tell me about the system you need to build, improve or deliver.</h1>
           <p className="page-description mx-auto">
-            Share the context, current constraints, and the outcome you are working toward. I am happy to talk about software, cloud platforms, backend architecture, delivery automation, or technical research.
+            Share the context, current constraints and the outcome you are working toward. I am available to discuss software, cloud platforms, backend architecture, delivery automation or technical research.
           </p>
         </div>
       </section>

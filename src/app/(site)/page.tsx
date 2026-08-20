@@ -40,7 +40,7 @@ export default async function HomePage() {
                 Engineering systems, <span>not just applications.</span>
               </h1>
               <p className="mt-7 max-w-2xl text-base leading-8 text-zinc-400 md:text-lg md:leading-9">
-                I design, build, and deploy dependable backend and cloud-native systems — and I help organisations turn software into reliable production systems.
+                I design, build and deploy dependable backend and cloud-native systems, helping organisations move software into reliable production environments.
               </p>
               <div className="mt-9 flex flex-wrap gap-3">
                 <TrackedLink
@@ -57,7 +57,7 @@ export default async function HomePage() {
               </div>
               <div className="mt-9 flex flex-wrap gap-x-6 gap-y-3 text-sm text-zinc-500">
                 <span className="inline-flex items-center gap-2"><MapPin size={15} className="text-teal-400" /> {siteConfig.location}</span>
-                <span className="inline-flex items-center gap-2"><Award size={15} className="text-teal-400" /> AWS Solutions Architect - Associate</span>
+                <span className="inline-flex items-center gap-2"><Award size={15} className="text-teal-400" /> AWS Solutions Architect – Associate</span>
               </div>
             </div>
     <div className="mx-auto w-full max-w-xl lg:ml-auto">
@@ -87,7 +87,7 @@ export default async function HomePage() {
           AWS certified
         </strong>
         <span className="mt-1 block text-[0.68rem] leading-4 text-zinc-500">
-          Solutions Architect - Associate
+          Solutions Architect – Associate
         </span>
       </span>
     </div>
@@ -99,24 +99,24 @@ export default async function HomePage() {
 
       <span>
         <strong className="block text-xs font-semibold text-zinc-100">
-          Production-minded
+          Production engineering
         </strong>
         <span className="mt-1 block text-[0.68rem] leading-4 text-zinc-500">
-          Build, ship, observe, improve
+          Reliable delivery and operations
         </span>
       </span>
     </div>
   </div>
 
   <div className="profile-focus-card mx-auto mt-3 max-w-md text-center">
-    <p className="font-mono text-[0.68rem] uppercase tracking-[0.2em] text-teal-300">
+    <p className="text-xs font-semibold tracking-[0.04em] text-teal-300">
       Current focus
     </p>
     <p className="mt-2 text-base font-semibold text-white">
       Cloud-native application delivery
     </p>
     <p className="mt-1 text-sm text-zinc-400">
-      Secure APIs <span className="text-teal-200 text-[1rem]">·</span> Platform automation <span className="text-teal-200 text-[1rem]">·</span> Reliable operations
+      Secure APIs, platform automation and reliable operations
     </p>
   </div>
 </div>
@@ -127,13 +127,13 @@ export default async function HomePage() {
       <section className="border-y border-white/10 bg-zinc-950/70">
         <div className="container-shell grid gap-px py-1 sm:grid-cols-2 lg:grid-cols-4">
           {[
-            ["Role", "Senior ICT Assistant · UENR"],
-            ["Core", "Software & cloud engineering"],
+            ["Role", "Senior ICT Assistant, UENR"],
+            ["Core", "Software and cloud engineering"],
             ["Credentials", "2 active AWS certifications"],
-            ["Delivery", "Web · Mobile · API · Infrastructure"],
+            ["Delivery", "Web platforms, mobile applications, APIs and cloud infrastructure"],
           ].map(([label, value]) => (
             <div className="px-5 py-6" key={label}>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-teal-500">{label}</p>
+              <p className="text-xs font-semibold tracking-[0.04em] text-teal-500">{label}</p>
               <p className="mt-2 text-sm font-medium text-zinc-300">{value}</p>
             </div>
           ))}
@@ -144,8 +144,8 @@ export default async function HomePage() {
         <div className="container-shell">
           <SectionHeading
             eyebrow="Selected projects"
-            title="Engineering work with the architecture visible."
-            description="Case studies connect product decisions to implementation, deployment, reliability, and the source repositories behind the work."
+            title="Selected engineering work, with the architecture explained."
+            description="Each case study explains the problem, implementation, deployment approach, reliability considerations and source code."
             action={<Link href="/projects" className="text-link">All projects <ArrowRight size={15} /></Link>}
           />
           <div className="mt-10 grid gap-5 md:grid-cols-2">
@@ -158,8 +158,8 @@ export default async function HomePage() {
         <div className="container-shell">
           <SectionHeading
             eyebrow="Capabilities"
-            title="Tools are useful when they support a sound engineering system."
-            description="My work combines cloud and platform tooling with application engineering, data design, security, documentation, and operational thinking."
+            title="Tools are useful when they solve the right engineering problems."
+            description="My work combines cloud and platform tools with application engineering, data design, security, documentation and day-to-day operations."
           />
           <div className="mt-12"><SkillGrid /></div>
         </div>
@@ -195,7 +195,7 @@ export default async function HomePage() {
                 {certifications.map((certification) => (
                   <div className="surface-card flex gap-3 p-4" key={certification.name}>
                     <CheckCircle2 size={18} className="mt-0.5 shrink-0 text-emerald-400" />
-                    <div><p className="text-sm font-medium text-zinc-200">{certification.name}</p><p className="mt-1 text-xs text-zinc-500">{certification.issuer} · {certification.year}</p></div>
+                    <div><p className="text-sm font-medium text-zinc-200">{certification.name}</p><p className="mt-1 text-xs text-zinc-500">{certification.issuer}, {certification.year}</p></div>
                   </div>
                 ))}
               </div>
@@ -207,8 +207,8 @@ export default async function HomePage() {
       <section className="section border-t border-white/10 bg-zinc-900/30">
         <div className="container-shell">
           <SectionHeading
-            eyebrow="Writing & insights"
-            title="What I learn while building systems."
+            eyebrow="Writing and insights"
+            title="Notes from building and operating software systems."
             description="Practical notes on architecture, platform engineering, APIs, cloud operations, and the decisions behind reliable software."
             action={<Link href="/blog" className="text-link">Browse writing <ArrowRight size={15} /></Link>}
           />
@@ -222,12 +222,12 @@ export default async function HomePage() {
         <div className="container-shell">
           <div className="cta-panel">
             <div>
-              <p className="eyebrow">Build something dependable</p>
+              <p className="eyebrow">Engineering support</p>
               <h2 className="max-w-2xl text-3xl font-semibold tracking-tight text-white md:text-4xl">
-                Need a software or cloud engineer who can connect code, infrastructure, and operations?
+                Need help with software, cloud infrastructure or production delivery?
               </h2>
               <p className="mt-4 max-w-2xl text-base leading-7 text-zinc-400">
-                Let&apos;s discuss the system, the constraints, and the delivery path.
+                Let&apos;s discuss the system, your constraints and a practical delivery path.
               </p>
             </div>
             <TrackedLink

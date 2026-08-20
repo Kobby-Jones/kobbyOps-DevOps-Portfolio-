@@ -234,3 +234,29 @@ test("consultation requests notify the owner without exposing email credentials"
     assert.doesNotMatch(await read(file), /RESEND_API_KEY|EMAIL_FROM/);
   }
 });
+
+test("international storefront pricing remains display-only", async () => {
+  const pricing = await read("src/lib/resource-pricing.ts");
+  const checkout = await read("src/app/api/checkout/route.ts");
+  const card = await read("src/components/site/ResourceProductCard.tsx");
+
+  assert.match(pricing, /x-vercel-ip-country/);
+  assert.match(pricing, /EXCHANGE_RATE_API_KEY/);
+  assert.doesNotMatch(pricing, /NEXT_PUBLIC_EXCHANGE_RATE_API_KEY/);
+  assert.match(card, /presentResourcePrice/);
+
+  assert.match(checkout, /const amount = Number\(resource\.price\)/);
+  assert.match(checkout, /const currency = String\(resource\.currency/);
+  assert.doesNotMatch(checkout, /resource-pricing|ghsToUsdRate|displayPrice|EXCHANGE_RATE_API_KEY/);
+});
+
+test("resource storefront uses product hierarchy instead of plain category and price text", async () => {
+  const card = await read("src/components/site/ResourceProductCard.tsx");
+  const css = await read("src/app/globals.css");
+
+  assert.match(card, /resource-category-chip/);
+  assert.match(card, /resource-product-price-panel/);
+  assert.match(card, /resource-product-type-badge/);
+  assert.match(css, /\.resource-product-card\s*\{/);
+  assert.match(css, /\.resource-product-price\s*\{/);
+});

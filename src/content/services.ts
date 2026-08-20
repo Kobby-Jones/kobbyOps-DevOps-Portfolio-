@@ -10,7 +10,7 @@ export const services: Service[] = [
 
 Whether you are launching a new product, migrating infrastructure, or improving deployment confidence, I work with your team to design and implement cloud infrastructure that supports the way you build and ship software.
 
-This service covers the full operational surface — from initial architecture through deployment automation, monitoring, and ongoing operational improvements.`,
+This service covers the operational path from initial architecture through deployment automation, monitoring and ongoing improvements.`,
     icon: "cloud",
     capabilities: [
       "AWS infrastructure design and implementation",
@@ -29,18 +29,18 @@ This service covers the full operational surface — from initial architecture t
     status: "published",
     seoTitle: "Cloud & DevOps Engineering Services",
     seoDescription:
-      "Professional cloud and DevOps engineering services — AWS, Docker, CI/CD, Kubernetes, and production infrastructure from an experienced cloud engineer in Ghana.",
+      "Cloud and DevOps engineering services covering AWS, Docker, CI/CD, Kubernetes and production infrastructure.",
   },
   {
     slug: "backend-engineering",
     title: "Backend Engineering",
     shortDescription:
-      "Build robust backend systems that provide the APIs, data layer, and business logic behind modern applications.",
-    description: `I build the server-side systems that power web and mobile products — APIs, data models, authentication, background processing, integrations, and the operational logic that keeps everything working together.
+      "Build dependable backend systems that provide the APIs, data layer and business logic behind modern applications.",
+    description: `I build the server-side systems behind web and mobile products, including APIs, data models, authentication, background processing, integrations and operational workflows.
 
 Good backend engineering is not just about making endpoints respond. It is about designing systems that handle real traffic, fail gracefully, and remain understandable as the product grows.
 
-I work with teams at the stage where they need reliable backend architecture — whether that is building from scratch, refactoring an existing codebase, or extending a system with new capabilities.`,
+I work with teams that need reliable backend architecture, whether they are building from scratch, refactoring an existing codebase or extending a system with new capabilities.`,
     icon: "code",
     capabilities: [
       "REST API design, implementation, and documentation",
@@ -59,7 +59,7 @@ I work with teams at the stage where they need reliable backend architecture —
     status: "published",
     seoTitle: "Backend Engineering Services",
     seoDescription:
-      "Professional backend engineering — APIs, databases, authentication, and server-side systems built with FastAPI, Node.js, PostgreSQL, and Redis.",
+      "Backend engineering services covering APIs, databases, authentication and server-side systems built with FastAPI, Node.js, PostgreSQL and Redis.",
   },
   {
     slug: "production-readiness-audit",
@@ -89,7 +89,7 @@ This is not a compliance checkbox exercise. It is an engineering review focused 
     status: "published",
     seoTitle: "Production Readiness Audit",
     seoDescription:
-      "Production readiness audit service — comprehensive review of architecture, security, deployment, infrastructure, and operational risks before your application goes live.",
+      "Production readiness audit covering architecture, security, deployment, infrastructure and operational risks before an application goes live.",
   },
   {
     slug: "architecture-consulting",
@@ -100,7 +100,7 @@ This is not a compliance checkbox exercise. It is an engineering review focused 
 
 This service is useful when you are starting a new system, considering a significant refactor, migrating to a different infrastructure model, or trying to understand why your current architecture is creating friction.
 
-I provide concrete, documented recommendations — not abstract diagrams that do not connect to your actual constraints.`,
+I provide concrete, documented recommendations that connect architecture decisions to your actual constraints.`,
     icon: "layers",
     capabilities: [
       "Backend and API architecture evaluation",
@@ -119,6 +119,6 @@ I provide concrete, documented recommendations — not abstract diagrams that do
     status: "published",
     seoTitle: "Architecture Consulting Services",
     seoDescription:
-      "Architecture consulting — evaluate backend, cloud, database, and deployment architectures for reliability, scalability, and maintainability.",
+      "Architecture consulting for backend, cloud, database and deployment systems, with attention to reliability, scalability and maintainability.",
   },
 ];

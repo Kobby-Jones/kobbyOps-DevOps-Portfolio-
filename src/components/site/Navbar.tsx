@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -35,7 +36,7 @@ const navigation: NavItem[] = [
     label: "Writing",
     children: [
       { href: "/blog", label: "Blog", description: "Technical articles and engineering notes" },
-      { href: "/insights", label: "Insights", description: "Short-form observations on systems and practice" },
+      { href: "/insights", label: "Insights", description: "Short engineering notes on systems and practice" },
     ],
   },
   { href: "/resources", label: "Resources" },
@@ -195,14 +196,21 @@ export default function Navbar() {
           aria-label="Cobbina Emmanuel home"
         >
           <span className="brand-mark" aria-hidden="true">
-            CE
+            <Image
+              src="/android-chrome-192x192.png"
+              alt=""
+              width={44}
+              height={44}
+              className="brand-mark-logo"
+              priority
+            />
           </span>
           <span className="leading-tight">
             <span className="block text-sm font-semibold tracking-tight text-white">
               Cobbina Emmanuel
             </span>
-            <span className="block text-[11px] font-medium uppercase tracking-[0.18em] text-zinc-500 transition-colors group-hover:text-teal-400">
-              Software & Cloud Engineer
+            <span className="block text-[11px] font-medium tracking-[0.04em] text-zinc-500 transition-colors group-hover:text-teal-400">
+              Software and Cloud Engineer
             </span>
           </span>
         </Link>
