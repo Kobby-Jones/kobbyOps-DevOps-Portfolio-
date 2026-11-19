@@ -76,7 +76,15 @@ export async function DELETE(request: Request) {
   const id = new URL(request.url).searchParams.get("id");
   if (!id) return NextResponse.json({ error: "Content ID is required." }, { status: 400 });
 
-  const { error } = await supabase.from("content_items").delete().eq("id", id);
+  const { data, error } = await supabase.from("content_items").delete().eq("id", id).select("type,slug").maybeSingle();
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  if (data) {
+    const section = data.type === "blog" ? "/blog" : "/insights";
+    revalidatePath(section);
+    revalidatePath(`${section}/${data.slug}`);
+    revalidatePath("/writing");
+    revalidatePath("/sitemap.xml");
+    revalidatePath("/feed.xml");
+  }
   return NextResponse.json({ ok: true });
 }

@@ -4,7 +4,7 @@ import ArticleDetail from "@/components/site/ArticleDetail";
 import JsonLd from "@/components/site/JsonLd";
 import { articles } from "@/content/articles";
 import { getArticleBySlug } from "@/lib/content";
-import { absoluteUrl, siteConfig } from "@/lib/site";
+import { absoluteUrl, articleCanonicalUrl, siteConfig } from "@/lib/site";
 
 type PageProps = { params: Promise<{ slug: string }> };
 
@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { slug } = await params;
   const article = await getArticleBySlug("insight", slug);
   if (!article) return {};
-  const canonical = article.canonicalUrl || `/insights/${article.slug}`;
+  const canonical = articleCanonicalUrl(article);
   return {
     title: article.seoTitle || article.title,
     description: article.seoDescription || article.excerpt,
@@ -49,7 +49,7 @@ export default async function InsightArticlePage({ params }: PageProps) {
     description: article.excerpt,
     datePublished: article.publishedAt,
     dateModified: article.updatedAt || article.publishedAt,
-    mainEntityOfPage: absoluteUrl(`/insights/${article.slug}`),
+    mainEntityOfPage: articleCanonicalUrl(article),
     author: { "@id": absoluteUrl("/#person"), name: siteConfig.name },
     publisher: { "@id": absoluteUrl("/#person"), name: siteConfig.name },
     keywords: article.tags.join(", "),
