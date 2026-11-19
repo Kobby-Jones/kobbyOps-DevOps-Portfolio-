@@ -74,8 +74,14 @@ export async function getArticleBySlug(
   type: ContentType,
   slug: string,
 ): Promise<Article | undefined> {
-  const articles = await getArticles(type);
-  return articles.find((article) => article.slug === slug);
+  const fallback = staticArticles.find((article) => article.type === type && article.slug === slug);
+  const supabase = createPublicSupabaseClient();
+  if (!supabase) return fallback;
+  const { data, error } = await supabase.from("content_items").select("*")
+    .eq("status", "published").eq("type", type).eq("slug", slug)
+    .lte("published_at", new Date().toISOString()).maybeSingle();
+  if (error && !fallback) throw new Error("Could not load the published article.", { cause: error });
+  return data ? toArticle(data as ContentRow) : fallback;
 }
 
 export async function getProjects(): Promise<Project[]> {
@@ -222,8 +228,8 @@ export async function getResourceBySlug(slug: string): Promise<Resource | undefi
     .select(RESOURCE_PUBLIC_COLUMNS)
     .eq("slug", slug)
     .eq("status", "published")
-    .single();
+    .maybeSingle();
 
-  if (error || !data) return undefined;
-  return toResource(data as ResourceRow);
+  if (error) throw new Error("Could not load the published resource.", { cause: error });
+  return data ? toResource(data as ResourceRow) : undefined;
 }
