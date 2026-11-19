@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Download, ExternalLink, Lock } from "lucide-react";
+import { ArrowLeft, ExternalLink, Lock } from "lucide-react";
 import JsonLd from "@/components/site/JsonLd";
 import MarkdownArticle from "@/components/site/MarkdownArticle";
+import FreeDownloadGate from "@/components/site/FreeDownloadGate";
 import ResourceCheckout from "@/components/site/ResourceCheckout";
 import TrackedAnchor from "@/components/site/TrackedAnchor";
 import { getResourceBySlug } from "@/lib/content";
@@ -39,8 +40,6 @@ export default async function ResourceDetailPage({ params }: Props) {
   const price = paid
     ? presentResourcePrice(resource.price, resource.currency, pricingContext)
     : null;
-  const downloadHref = `/api/download/free/${encodeURIComponent(resource.slug)}`;
-  const freeHref = resource.hasDownload ? downloadHref : resource.externalUrl || downloadHref;
   const productUrl = absoluteUrl(`/resources/${resource.slug}`);
   const productSchema = {
     "@context": "https://schema.org",
@@ -115,39 +114,11 @@ export default async function ResourceDetailPage({ params }: Props) {
                   />
                 ) : null
               ) : (
-                <div className="surface-card p-6">
-                  <span className="inline-flex items-center gap-2 text-sm font-medium text-white">
-                    <Download size={16} className="text-teal-400" /> Available now
-                  </span>
-                  <p className="mt-3 text-sm leading-7 text-zinc-400">
-                    This resource is free to access. Use the button below to download the file or open the external resource.
-                  </p>
-                  <TrackedAnchor
-                    className="button button-primary mt-6 w-full justify-center"
-                    href={freeHref}
-                    target={!resource.hasDownload && resource.externalUrl ? "_blank" : undefined}
-                    rel={!resource.hasDownload && resource.externalUrl ? "noreferrer" : undefined}
-                    analyticsLabel={resource.hasDownload ? "resource_free_download" : "resource_external_open"}
-                    analyticsMetadata={{
-                      placement: "resource_detail",
-                      resourceSlug: resource.slug,
-                    }}
-                  >
-                    {resource.hasDownload ? <>Download free <Download size={16} /></> : <>Open resource <ExternalLink size={16} /></>}
-                  </TrackedAnchor>
-                  {resource.hasDownload && resource.externalUrl ? (
-                    <TrackedAnchor
-                      className="button button-secondary mt-3 w-full justify-center"
-                      href={resource.externalUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      analyticsLabel="resource_external_open"
-                      analyticsMetadata={{ placement: "resource_detail_secondary", resourceSlug: resource.slug }}
-                    >
-                      Open external resource <ExternalLink size={16} />
-                    </TrackedAnchor>
-                  ) : null}
-                </div>
+                <FreeDownloadGate
+                  resourceSlug={resource.slug}
+                  hasDownload={!!resource.hasDownload}
+                  externalUrl={resource.externalUrl}
+                />
               )}
 
               {paid && resource.externalUrl ? (
